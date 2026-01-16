@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 240" width="650" height="240">
+  <!-- Terminal window -->
+  <rect fill="#0A1014" width="650" height="240" rx="8"/>
+
+  <!-- Terminal header -->
+  <rect fill="#1C2432" width="650" height="36"/>
+  <circle fill="#EF4444" cx="20" cy="18" r="6"/>
+  <circle fill="#F59E0B" cx="40" cy="18" r="6"/>
+  <circle fill="#10B981" cx="60" cy="18" r="6"/>
+  <text x="325" y="22" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" text-anchor="middle">Install protein design skills</text>
+
+  <!-- Terminal body -->
+  <g transform="translate(24, 56)">
+    <!-- Comment -->
+    <text x="0" y="0" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"># In Claude Code</text>
+
+    <!-- Command 1 -->
+    <text x="0" y="28" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&gt;</text>
+    <text x="16" y="28" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">/plugin marketplace add </text>
+    <text x="230" y="28" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">adaptyvbio/protein-design-skills</text>
+
+    <!-- Output 1 -->
+    <text x="0" y="52" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="52" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">Added </text>
+    <text x="64" y="52" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">protein-design-skills</text>
+    <text x="225" y="52" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"> to marketplace</text>
+
+    <!-- Command 2 -->
+    <text x="0" y="88" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&gt;</text>
+    <text x="16" y="88" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">/plugin install </text>
+    <text x="140" y="88" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">all</text>
+    <text x="165" y="88" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">@protein-design-skills</text>
+
+    <!-- Output 2 -->
+    <text x="0" y="112" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="112" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">Installed </text>
+    <text x="88" y="112" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">21 skills</text>
+
+    <!-- Output 3 -->
+    <text x="0" y="136" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="136" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">Ready to design proteins!</text>
+
+    <!-- Prompt -->
+    <text x="0" y="164" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&gt;</text>
+    <rect x="16" y="152" width="8" height="14" fill="#36B7F6"/>
+  </g>
+</svg>

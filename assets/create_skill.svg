@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 340" width="700" height="340">
+  <!-- Terminal window -->
+  <rect fill="#0A1014" width="700" height="340" rx="8"/>
+
+  <!-- Terminal header -->
+  <rect fill="#1C2432" width="700" height="36"/>
+  <circle fill="#EF4444" cx="20" cy="18" r="6"/>
+  <circle fill="#F59E0B" cx="40" cy="18" r="6"/>
+  <circle fill="#10B981" cx="60" cy="18" r="6"/>
+  <text x="350" y="22" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" text-anchor="middle">Create a new skill</text>
+
+  <!-- Terminal body -->
+  <g transform="translate(24, 52)">
+    <!-- Clone commands -->
+    <text x="0" y="0" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">$</text>
+    <text x="16" y="0" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">git clone https://github.com/adaptyvbio/protein-design-skills</text>
+
+    <text x="0" y="22" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">$</text>
+    <text x="16" y="22" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">cd protein-design-skills &amp;&amp; mkdir -p skills/my-tool</text>
+
+    <!-- Comment -->
+    <text x="0" y="56" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12"># Create skills/my-tool/SKILL.md:</text>
+
+    <!-- YAML content -->
+    <text x="0" y="82" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">---</text>
+
+    <text x="0" y="100" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">name:</text>
+    <text x="50" y="100" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">my-tool</text>
+
+    <text x="0" y="118" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">description:</text>
+    <text x="100" y="118" fill="#A855F7" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">&gt;</text>
+
+    <text x="16" y="136" fill="#A855F7" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">Tool description. Use when: (1) case 1, (2) case 2.</text>
+
+    <text x="0" y="154" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">category:</text>
+    <text x="80" y="154" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">design-tools</text>
+
+    <text x="0" y="172" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">biomodals_script:</text>
+    <text x="140" y="172" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">modal_mytool.py</text>
+
+    <text x="0" y="190" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">---</text>
+
+    <!-- Git commands -->
+    <text x="0" y="220" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">$</text>
+    <text x="16" y="220" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">git add . &amp;&amp; git commit -m "Add my-tool skill"</text>
+
+    <text x="0" y="242" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">$</text>
+    <text x="16" y="242" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">git push origin add-my-tool</text>
+
+    <!-- Success -->
+    <text x="0" y="274" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">&#10003;</text>
+    <text x="16" y="274" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">Open PR at </text>
+    <text x="110" y="274" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">github.com/adaptyvbio/protein-design-skills</text>
+
+    <!-- Prompt -->
+    <text x="0" y="296" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">$</text>
+    <rect x="16" y="284" width="7" height="13" fill="#36B7F6"/>
+  </g>
+</svg>

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 280" width="560" height="280">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap');
+
+    .container {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0D1116;
+      color: #F8FAFC;
+      padding: 40px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #36B7F6;
+      margin: 0;
+      letter-spacing: 0.15em;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #94A3B8;
+      margin: 0 0 20px 0;
+    }
+
+    .monster-container {
+      position: relative;
+      width: 480px;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Monster glow pulse */
+    @keyframes monster-glow {
+      0%, 100% { filter: drop-shadow(0 0 6px rgba(54,183,246,0.4)); }
+      50% { filter: drop-shadow(0 0 12px rgba(54,183,246,0.7)); }
+    }
+
+    .monster { animation: monster-glow 3s ease-in-out infinite; }
+
+    /* Eye blink animation */
+    @keyframes blink {
+      0%, 85%, 100% { transform: scaleY(1); }
+      92%, 96% { transform: scaleY(0.1); }
+    }
+
+    .eyes {
+      animation: blink 4s ease-in-out infinite;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+
+  </style>
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="container">
+      <div class="header">
+        <svg class="logo" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <path d="M103.974 51.5755C112.069 49.1077 120.192 49.5161 128.361 52.7933L170.148 71.039C182.638 76.2096 188.611 86.0054 188.07 100.433L183.813 198.449L195.333 191.813L224.561 174.984C230.429 170.682 233.832 165.325 234.823 158.53C235.938 151.12 240.709 136.474 233.097 132.406L202.102 117.082C201.153 116.613 200.553 115.646 200.553 114.587V104.528C200.553 102.475 202.698 101.129 204.546 102.021L242.339 120.266C251.081 124.208 255.115 131.651 254.425 142.608L249.953 167.204C248.012 175.578 243.463 182.034 236.321 186.561L192.802 213.071C191.333 213.92 189.872 214.673 188.42 215.311C177.478 220.126 166.957 218.889 156.868 211.595L88.0936 154.547C85.8889 152.146 84.1651 149.553 83.0293 146.813L81.6293 147.431C78.0516 148.733 76.4359 151.871 76.7879 156.847C76.8659 157.93 77.0384 159.114 77.3017 160.378L85.4487 204.584C87.0263 210.835 88.9846 215.255 91.323 217.85L101.917 228.449C106.178 232.194 111.023 232.679 116.457 229.903L141.055 215.75C142.085 215.157 143.377 215.283 144.273 216.065L152.032 222.833C153.458 224.077 153.254 226.351 151.629 227.321L122.057 244.974C109.636 252.266 99.575 251.6 91.2714 243.264L77.6796 228.519C73.9494 224.38 70.8428 217.342 68.3338 207.384L58.8358 162.496C55.1244 148.138 58.9793 138.444 72.4603 132.572L170.142 93.3948C168.702 90.9457 166.645 89.0147 163.966 87.6156L159.845 85.6339L129.32 70.9601C121.151 67.6793 113.445 66.8244 105.35 69.2884L98.1271 71.8056C92.2737 74.04 90.5124 76.9639 91.4399 82.8802L94.4257 109.613C94.5583 110.8 93.9204 111.942 92.8261 112.421C89.3589 113.939 85.1984 115.537 82.3851 116.587C80.725 117.206 78.9362 116.114 78.7035 114.358L73.95 78.4792C72.0393 66.1276 76.438 60.1019 86.6746 56.754L103.974 51.5755ZM96.14 141.051L96.4091 141.657C97.8044 144.649 99.8505 147.091 102.46 148.942L164.833 197.101C165.705 197.768 166.605 198.349 167.53 198.835C169.641 197.357 170.732 195.161 170.906 192.278L172.564 107.446L96.14 141.051Z" fill="#36B7F6"/>
+        </svg>
+        <h1 class="title">ADAPTYV</h1>
+      </div>
+      <p class="subtitle">Protein Design Skills</p>
+
+      <div class="monster-container">
+        <!-- Adaptyv-inspired Angular Pixel Monster -->
+        <svg width="100" height="120" viewBox="0 0 100 120" class="monster" xmlns="http://www.w3.org/2000/svg">
+          <!-- Angular body inspired by Adaptyv logo -->
+          <polygon points="50,0 90,20 90,70 70,90 30,90 10,70 10,20" fill="#36B7F6"/>
+
+          <!-- Angular ear/antenna left -->
+          <polygon points="10,20 0,10 0,35 10,40" fill="#36B7F6"/>
+
+          <!-- Angular ear/antenna right -->
+          <polygon points="90,20 100,10 100,35 90,40" fill="#36B7F6"/>
+
+          <!-- Eyes -->
+          <g class="eyes">
+            <rect x="25" y="32" width="14" height="20" fill="#0D1116"/>
+            <rect x="61" y="32" width="14" height="20" fill="#0D1116"/>
+          </g>
+
+          <!-- Angular mouth -->
+          <polygon points="40,62 60,62 55,72 45,72" fill="#0D1116"/>
+
+          <!-- Legs -->
+          <rect x="25" y="90" width="14" height="28" fill="#36B7F6"/>
+          <rect x="61" y="90" width="14" height="28" fill="#36B7F6"/>
+        </svg>
+      </div>
+    </div>
+  </foreignObject>
+</svg>

@@ -1,0 +1,221 @@
+{
+  "name": "protein-design-skills",
+  "version": "2.0.0",
+  "description": "Claude Code skills for computational protein design - backbone generation, sequence design, structure prediction, and experimental validation",
+  "owner": {
+    "name": "tudor@adaptyv",
+    "url": "https://github.com/adaptyvbio/protein-design-skills"
+  },
+  "plugins": [
+    {
+      "name": "adaptyv",
+      "description": "All 21 protein design skills",
+      "source": "./",
+      "skills": [
+        "./skills/boltzgen",
+        "./skills/bindcraft",
+        "./skills/rfdiffusion",
+        "./skills/proteinmpnn",
+        "./skills/ligandmpnn",
+        "./skills/solublempnn",
+        "./skills/chai",
+        "./skills/boltz",
+        "./skills/alphafold",
+        "./skills/esm",
+        "./skills/protein-qc",
+        "./skills/ipsae",
+        "./skills/pdb",
+        "./skills/uniprot",
+        "./skills/foldseek",
+        "./skills/cell-free-expression",
+        "./skills/binding-characterization",
+        "./skills/protein-design-workflow",
+        "./skills/campaign-manager",
+        "./skills/binder-design",
+        "./skills/setup"
+      ]
+    },
+    {
+      "name": "design-tools",
+      "description": "Core protein design methods (BoltzGen, BindCraft, RFdiffusion, etc.)",
+      "source": "./",
+      "skills": [
+        "./skills/boltzgen",
+        "./skills/bindcraft",
+        "./skills/rfdiffusion",
+        "./skills/proteinmpnn",
+        "./skills/ligandmpnn",
+        "./skills/solublempnn",
+        "./skills/chai",
+        "./skills/boltz",
+        "./skills/alphafold",
+        "./skills/esm"
+      ]
+    },
+    {
+      "name": "evaluation",
+      "description": "Metrics, filtering, and quality control",
+      "source": "./",
+      "skills": [
+        "./skills/protein-qc",
+        "./skills/ipsae"
+      ]
+    },
+    {
+      "name": "utilities",
+      "description": "Database access, structure utilities, setup",
+      "source": "./",
+      "skills": [
+        "./skills/pdb",
+        "./skills/uniprot",
+        "./skills/foldseek",
+        "./skills/setup"
+      ]
+    },
+    {
+      "name": "experimental",
+      "description": "Experimental validation workflows",
+      "source": "./",
+      "skills": [
+        "./skills/cell-free-expression",
+        "./skills/binding-characterization"
+      ]
+    },
+    {
+      "name": "orchestration",
+      "description": "End-to-end workflows and pipeline management",
+      "source": "./",
+      "skills": [
+        "./skills/protein-design-workflow",
+        "./skills/campaign-manager",
+        "./skills/binder-design"
+      ]
+    },
+    {
+      "name": "boltzgen",
+      "description": "All-atom protein design using BoltzGen diffusion model",
+      "source": "./",
+      "skills": ["./skills/boltzgen"]
+    },
+    {
+      "name": "bindcraft",
+      "description": "End-to-end binder design using BindCraft hallucination",
+      "source": "./",
+      "skills": ["./skills/bindcraft"]
+    },
+    {
+      "name": "rfdiffusion",
+      "description": "Generate protein backbones using RFdiffusion",
+      "source": "./",
+      "skills": ["./skills/rfdiffusion"]
+    },
+    {
+      "name": "proteinmpnn",
+      "description": "Design protein sequences using ProteinMPNN inverse folding",
+      "source": "./",
+      "skills": ["./skills/proteinmpnn"]
+    },
+    {
+      "name": "ligandmpnn",
+      "description": "Ligand-aware protein sequence design using LigandMPNN",
+      "source": "./",
+      "skills": ["./skills/ligandmpnn"]
+    },
+    {
+      "name": "solublempnn",
+      "description": "Solubility-optimized protein sequence design using SolubleMPNN",
+      "source": "./",
+      "skills": ["./skills/solublempnn"]
+    },
+    {
+      "name": "chai",
+      "description": "Structure prediction using Chai-1",
+      "source": "./",
+      "skills": ["./skills/chai"]
+    },
+    {
+      "name": "boltz",
+      "description": "Structure prediction using Boltz-1/Boltz-2",
+      "source": "./",
+      "skills": ["./skills/boltz"]
+    },
+    {
+      "name": "alphafold",
+      "description": "Validate protein designs using AlphaFold2 structure prediction",
+      "source": "./",
+      "skills": ["./skills/alphafold"]
+    },
+    {
+      "name": "esm",
+      "description": "ESM2 protein language model for embeddings and sequence scoring",
+      "source": "./",
+      "skills": ["./skills/esm"]
+    },
+    {
+      "name": "protein-qc",
+      "description": "Quality control metrics and filtering thresholds for protein design",
+      "source": "./",
+      "skills": ["./skills/protein-qc"]
+    },
+    {
+      "name": "ipsae",
+      "description": "Binder design ranking using ipSAE",
+      "source": "./",
+      "skills": ["./skills/ipsae"]
+    },
+    {
+      "name": "pdb",
+      "description": "Fetch and analyze protein structures from RCSB PDB",
+      "source": "./",
+      "skills": ["./skills/pdb"]
+    },
+    {
+      "name": "uniprot",
+      "description": "Access UniProt for protein sequence and annotation retrieval",
+      "source": "./",
+      "skills": ["./skills/uniprot"]
+    },
+    {
+      "name": "foldseek",
+      "description": "Structure similarity search with Foldseek",
+      "source": "./",
+      "skills": ["./skills/foldseek"]
+    },
+    {
+      "name": "setup",
+      "description": "First-time setup for protein design tools",
+      "source": "./",
+      "skills": ["./skills/setup"]
+    },
+    {
+      "name": "cell-free-expression",
+      "description": "Guidance for cell-free protein synthesis (CFPS) optimization",
+      "source": "./",
+      "skills": ["./skills/cell-free-expression"]
+    },
+    {
+      "name": "binding-characterization",
+      "description": "Guidance for SPR and BLI binding characterization experiments",
+      "source": "./",
+      "skills": ["./skills/binding-characterization"]
+    },
+    {
+      "name": "protein-design-workflow",
+      "description": "End-to-end guidance for protein design pipelines",
+      "source": "./",
+      "skills": ["./skills/protein-design-workflow"]
+    },
+    {
+      "name": "campaign-manager",
+      "description": "Goal-oriented binder design campaign planning and health assessment",
+      "source": "./",
+      "skills": ["./skills/campaign-manager"]
+    },
+    {
+      "name": "binder-design",
+      "description": "Guidance for choosing the right protein binder design tool",
+      "source": "./",
+      "skills": ["./skills/binder-design"]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 280" width="650" height="280">
+  <!-- Terminal window -->
+  <rect fill="#0A1014" width="650" height="280" rx="8"/>
+
+  <!-- Terminal header -->
+  <rect fill="#1C2432" width="650" height="36"/>
+  <circle fill="#EF4444" cx="20" cy="18" r="6"/>
+  <circle fill="#F59E0B" cx="40" cy="18" r="6"/>
+  <circle fill="#10B981" cx="60" cy="18" r="6"/>
+  <text x="325" y="22" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12" text-anchor="middle">First-time setup</text>
+
+  <!-- Terminal body -->
+  <g transform="translate(24, 56)">
+    <!-- Step 1: Install Modal -->
+    <text x="0" y="0" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"># Step 1: Install Modal CLI</text>
+
+    <text x="0" y="24" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">$</text>
+    <text x="16" y="24" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">pip install modal</text>
+
+    <text x="0" y="48" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="48" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal --version</text>
+
+    <!-- Step 2: Authenticate -->
+    <text x="0" y="80" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"># Step 2: Authenticate</text>
+
+    <text x="0" y="104" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">$</text>
+    <text x="16" y="104" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal setup</text>
+
+    <text x="0" y="128" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="128" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal token show</text>
+
+    <!-- Step 3: Clone biomodals -->
+    <text x="0" y="160" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"># Step 3: Get biomodals</text>
+
+    <text x="0" y="184" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">$</text>
+    <text x="16" y="184" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">git clone </text>
+    <text x="105" y="184" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">https://github.com/hgbrian/biomodals</text>
+
+    <text x="0" y="208" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
+    <text x="16" y="208" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">Ready! Run: </text>
+    <text x="105" y="208" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">uvx modal run modal_boltzgen.py --help</text>
+  </g>
+</svg>

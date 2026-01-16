@@ -1,0 +1,38 @@
+{
+  "name": "Protein Design Skills",
+  "description": "Computational protein design tools for Claude Code - backbone generation, sequence design, structure prediction, and experimental validation",
+  "version": "2.0.0",
+  "author": "tudor@adaptyv",
+  "repository": "https://github.com/adaptyvbio/protein-design-skills",
+  "homepage": "https://www.adaptyvbio.com",
+  "license": "MIT",
+  "categories": ["science", "biology", "protein-design", "computational-biology"],
+  "keywords": [
+    "protein-design",
+    "binder-design",
+    "rfdiffusion",
+    "boltzgen",
+    "alphafold",
+    "structure-prediction",
+    "sequence-design"
+  ],
+  "requirements": {
+    "modal": "optional (recommended for GPU execution)",
+    "gpu": "optional (required for local execution)"
+  },
+  "skills_count": 20,
+  "skill_categories": {
+    "design-tools": 10,
+    "evaluation": 2,
+    "utilities": 3,
+    "experimental": 2,
+    "orchestration": 3
+  },
+  "featured_skills": [
+    "boltzgen",
+    "bindcraft",
+    "rfdiffusion",
+    "chai",
+    "protein-qc"
+  ]
+}

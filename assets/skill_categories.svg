@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 220" width="550" height="220">
+  <!-- Glow filters for each color -->
+  <defs>
+    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-amber" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-pink" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect fill="#0D1116" width="550" height="220" rx="8"/>
+
+  <!-- Header section -->
+  <g transform="translate(36, 28)">
+    <!-- Adaptyv logo -->
+    <g transform="translate(0, 0) scale(0.09)">
+      <path d="M103.974 51.5755C112.069 49.1077 120.192 49.5161 128.361 52.7933L170.148 71.039C182.638 76.2096 188.611 86.0054 188.07 100.433L183.813 198.449L195.333 191.813L224.561 174.984C230.429 170.682 233.832 165.325 234.823 158.53C235.938 151.12 240.709 136.474 233.097 132.406L202.102 117.082C201.153 116.613 200.553 115.646 200.553 114.587V104.528C200.553 102.475 202.698 101.129 204.546 102.021L242.339 120.266C251.081 124.208 255.115 131.651 254.425 142.608L249.953 167.204C248.012 175.578 243.463 182.034 236.321 186.561L192.802 213.071C191.333 213.92 189.872 214.673 188.42 215.311C177.478 220.126 166.957 218.889 156.868 211.595L88.0936 154.547C85.8889 152.146 84.1651 149.553 83.0293 146.813L81.6293 147.431C78.0516 148.733 76.4359 151.871 76.7879 156.847C76.8659 157.93 77.0384 159.114 77.3017 160.378L85.4487 204.584C87.0263 210.835 88.9846 215.255 91.323 217.85L101.917 228.449C106.178 232.194 111.023 232.679 116.457 229.903L141.055 215.75C142.085 215.157 143.377 215.283 144.273 216.065L152.032 222.833C153.458 224.077 153.254 226.351 151.629 227.321L122.057 244.974C109.636 252.266 99.575 251.6 91.2714 243.264L77.6796 228.519C73.9494 224.38 70.8428 217.342 68.3338 207.384L58.8358 162.496C55.1244 148.138 58.9793 138.444 72.4603 132.572L170.142 93.3948C168.702 90.9457 166.645 89.0147 163.966 87.6156L159.845 85.6339L129.32 70.9601C121.151 67.6793 113.445 66.8244 105.35 69.2884L98.1271 71.8056C92.2737 74.04 90.5124 76.9639 91.4399 82.8802L94.4257 109.613C94.5583 110.8 93.9204 111.942 92.8261 112.421C89.3589 113.939 85.1984 115.537 82.3851 116.587C80.725 117.206 78.9362 116.114 78.7035 114.358L73.95 78.4792C72.0393 66.1276 76.438 60.1019 86.6746 56.754L103.974 51.5755ZM96.14 141.051L96.4091 141.657C97.8044 144.649 99.8505 147.091 102.46 148.942L164.833 197.101C165.705 197.768 166.605 198.349 167.53 198.835C169.641 197.357 170.732 195.161 170.906 192.278L172.564 107.446L96.14 141.051Z" fill="#36B7F6"/>
+    </g>
+
+    <!-- Title -->
+    <text x="38" y="18" fill="#94A3B8" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="600" letter-spacing="0.1em">PROTEIN DESIGN SKILLS</text>
+    <text x="280" y="18" fill="#64748B" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">21 skills across 5 categories</text>
+  </g>
+
+  <!-- Categories grid -->
+  <g transform="translate(36, 70)">
+    <!-- Row 1 -->
+    <!-- design tools - 10 -->
+    <g transform="translate(0, 0)">
+      <text x="0" y="20" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">
+        design tools
+        <animate attributeName="fill" values="#475569;#36B7F6;#36B7F6;#475569;#475569" dur="10s" keyTimes="0;0.02;0.15;0.18;1" repeatCount="indefinite"/>
+        <animate attributeName="filter" values="none;url(#glow-blue);url(#glow-blue);none;none" dur="10s" keyTimes="0;0.02;0.15;0.18;1" repeatCount="indefinite"/>
+      </text>
+      <rect x="125" y="6" width="32" height="20" rx="10" fill="rgba(100, 116, 139, 0.15)"/>
+      <text x="141" y="20" fill="#64748B" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">10</text>
+    </g>
+
+    <!-- evaluation - 2 -->
+    <g transform="translate(260, 0)">
+      <text x="0" y="20" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">
+        evaluation
+        <animate attributeName="fill" values="#475569;#475569;#10B981;#10B981;#475569;#475569" dur="10s" keyTimes="0;0.18;0.2;0.35;0.38;1" repeatCount="indefinite"/>
+        <animate attributeName="filter" values="none;none;url(#glow-green);url(#glow-green);none;none" dur="10s" keyTimes="0;0.18;0.2;0.35;0.38;1" repeatCount="indefinite"/>
+      </text>
+      <rect x="105" y="6" width="26" height="20" rx="10" fill="rgba(100, 116, 139, 0.15)"/>
+      <text x="118" y="20" fill="#64748B" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">2</text>
+    </g>
+
+    <!-- Row 2 -->
+    <!-- utilities - 4 -->
+    <g transform="translate(0, 45)">
+      <text x="0" y="20" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">
+        utilities
+        <animate attributeName="fill" values="#475569;#475569;#F59E0B;#F59E0B;#475569;#475569" dur="10s" keyTimes="0;0.38;0.4;0.55;0.58;1" repeatCount="indefinite"/>
+        <animate attributeName="filter" values="none;none;url(#glow-amber);url(#glow-amber);none;none" dur="10s" keyTimes="0;0.38;0.4;0.55;0.58;1" repeatCount="indefinite"/>
+      </text>
+      <rect x="90" y="6" width="26" height="20" rx="10" fill="rgba(100, 116, 139, 0.15)"/>
+      <text x="103" y="20" fill="#64748B" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">4</text>
+    </g>
+
+    <!-- experimental - 2 -->
+    <g transform="translate(260, 45)">
+      <text x="0" y="20" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">
+        experimental
+        <animate attributeName="fill" values="#475569;#475569;#A855F7;#A855F7;#475569;#475569" dur="10s" keyTimes="0;0.58;0.6;0.75;0.78;1" repeatCount="indefinite"/>
+        <animate attributeName="filter" values="none;none;url(#glow-purple);url(#glow-purple);none;none" dur="10s" keyTimes="0;0.58;0.6;0.75;0.78;1" repeatCount="indefinite"/>
+      </text>
+      <rect x="125" y="6" width="26" height="20" rx="10" fill="rgba(100, 116, 139, 0.15)"/>
+      <text x="138" y="20" fill="#64748B" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">2</text>
+    </g>
+
+    <!-- Row 3 -->
+    <!-- orchestration - 3 -->
+    <g transform="translate(0, 90)">
+      <text x="0" y="20" fill="#475569" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">
+        orchestration
+        <animate attributeName="fill" values="#475569;#475569;#EC4899;#EC4899;#475569" dur="10s" keyTimes="0;0.78;0.8;0.95;1" repeatCount="indefinite"/>
+        <animate attributeName="filter" values="none;none;url(#glow-pink);url(#glow-pink);none" dur="10s" keyTimes="0;0.78;0.8;0.95;1" repeatCount="indefinite"/>
+      </text>
+      <rect x="135" y="6" width="26" height="20" rx="10" fill="rgba(100, 116, 139, 0.15)"/>
+      <text x="148" y="20" fill="#64748B" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">3</text>
+    </g>
+  </g>
+</svg>
