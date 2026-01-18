@@ -29,7 +29,7 @@ tags: [search, structure, database, similarity]
 
 **Note**: Foldseek can run locally or via web server. No GPU required.
 
-### Option 1: Web Server (Quick; rate-limitted use sparingly)
+### Option 1: Web Server (Quick; rate-limited, use sparingly)
 ```bash
 # Upload structure to web server
 curl -X POST "https://search.foldseek.com/api/ticket" \
