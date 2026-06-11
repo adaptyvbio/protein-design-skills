@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <strong>21 Claude Code skills for computational protein design</strong>
+  <strong>22 Claude Code skills for computational protein design</strong>
 </p>
 
 <p align="center">
@@ -39,7 +39,7 @@
   <img src="assets/skill_categories.svg" width="550" alt="Skill categories">
 </p>
 
-→ [View all 21 skills](docs/skills.md)
+→ [View all 22 skills](docs/skills.md)
 
 ---
 
@@ -57,7 +57,8 @@
 
 > "Design a binder for PDB 1ALU"
 
-Claude will automatically use the right skills (BoltzGen → Chai → QC).
+Claude will pick the right skills for the target (for example BoltzGen → Chai → QC,
+or RFdiffusion → ProteinMPNN → Chai → QC).
 
 ---
 

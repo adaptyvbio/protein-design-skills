@@ -30,7 +30,7 @@ biomodals_script: modal_boltz.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
 ### Option 1: Modal
 ```bash
@@ -178,10 +178,22 @@ find predictions -name "*.cif" | wc -l  # Should match input count
 
 | Aspect | Boltz-1 | Boltz-2 |
 |--------|---------|---------|
-| Speed | Fast | ~2x faster |
-| Accuracy | Good | Improved |
+| Speed | Fast | Faster |
+| Accuracy | Good | Improved, notably antibody-antigen |
 | Ligands | Basic | Better support |
-| Release | 2024 | Late 2024 |
+| Affinity prediction | No | Yes (small-molecule binding) |
+| Release | 2024 | 2025 |
+
+Boltz-2 is the current default. Boltz-1 is still used where a design pipeline
+inverts the v1 model.
+
+### Affinity prediction (Boltz-2)
+
+Boltz-2 adds an affinity-prediction module that approaches free-energy-perturbation
+accuracy at a fraction of the cost. It is trained on small-molecule binding data, so
+use it for protein-ligand and small-molecule work. It does not predict
+protein-protein binding affinity; for protein binders, rely on interface confidence
+(ipTM, ipSAE) instead.
 
 ---
 

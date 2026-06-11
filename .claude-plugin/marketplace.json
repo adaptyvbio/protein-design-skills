@@ -1,6 +1,6 @@
 {
   "name": "protein-design-skills",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Claude Code skills for computational protein design - backbone generation, sequence design, structure prediction, and experimental validation",
   "owner": {
     "name": "tudor@adaptyv",
@@ -9,12 +9,13 @@
   "plugins": [
     {
       "name": "adaptyv",
-      "description": "All 21 protein design skills",
+      "description": "All 22 protein design skills",
       "source": "./",
       "skills": [
         "./skills/boltzgen",
         "./skills/bindcraft",
         "./skills/rfdiffusion",
+        "./skills/mosaic",
         "./skills/proteinmpnn",
         "./skills/ligandmpnn",
         "./skills/solublempnn",
@@ -37,12 +38,13 @@
     },
     {
       "name": "design-tools",
-      "description": "Core protein design methods (BoltzGen, BindCraft, RFdiffusion, etc.)",
+      "description": "Core protein design methods (BoltzGen, BindCraft, RFdiffusion, Mosaic, etc.)",
       "source": "./",
       "skills": [
         "./skills/boltzgen",
         "./skills/bindcraft",
         "./skills/rfdiffusion",
+        "./skills/mosaic",
         "./skills/proteinmpnn",
         "./skills/ligandmpnn",
         "./skills/solublempnn",
@@ -110,6 +112,12 @@
       "skills": ["./skills/rfdiffusion"]
     },
     {
+      "name": "mosaic",
+      "description": "Multi-objective, gradient-based binder design using Mosaic",
+      "source": "./",
+      "skills": ["./skills/mosaic"]
+    },
+    {
       "name": "proteinmpnn",
       "description": "Design protein sequences using ProteinMPNN inverse folding",
       "source": "./",
@@ -147,7 +155,7 @@
     },
     {
       "name": "esm",
-      "description": "ESM2 protein language model for embeddings and sequence scoring",
+      "description": "ESM protein language models (ESM C, ESMFold2, ESM2) for embeddings, scoring, structure prediction, and binder design",
       "source": "./",
       "skills": ["./skills/esm"]
     },

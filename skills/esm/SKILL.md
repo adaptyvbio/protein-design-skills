@@ -1,181 +1,178 @@
 ---
 name: esm
 description: >
-  ESM2 protein language model for embeddings and sequence scoring.
-  Use this skill when: (1) Computing pseudo-log-likelihood (PLL) scores,
-  (2) Getting protein embeddings for clustering,
-  (3) Filtering designs by sequence plausibility,
-  (4) Zero-shot variant effect prediction,
-  (5) Analyzing sequence-function relationships.
+  ESM protein language models for embeddings, sequence scoring, structure
+  prediction, and binder design. Use this skill when: (1) Computing
+  pseudo-log-likelihood (PLL) or mutation-effect scores, (2) Getting protein
+  embeddings for clustering or filtering, (3) Predicting complex structures with
+  ESMFold2, (4) Designing binders by inverting ESMFold2, (5) Filtering designs by
+  sequence plausibility.
 
-  For structure prediction, use chai or boltz.
+  For diffusion-based structure prediction, use boltz or chai.
   For QC thresholds, use protein-qc.
+  For gradient-based multi-objective design, use mosaic.
 license: MIT
 category: design-tools
-tags: [sequence-design, embeddings, scoring]
+tags: [sequence-design, embeddings, scoring, structure-prediction, binder]
 proteinbase_slug: esm2-optimization
 proteinbase_url: https://proteinbase.com/design-methods/esm2-optimization
 biomodals_script: modal_esm2_predict_masked.py
 ---
 
-# ESM2 Protein Language Model
+# ESM Protein Language Models
+
+The ESM line is maintained at [github.com/Biohub/esm](https://github.com/Biohub/esm)
+(Chan Zuckerberg Biohub, MIT license; the older `evolutionaryscale/esm` URL
+redirects here). The current generation ships three artifacts: **ESM C** (language
+model), **ESMFold2** (structure prediction), and **ESM Atlas** (a map of predicted
+structures). Weights are on [huggingface.co/biohub](https://huggingface.co/biohub);
+the hosted API is at `biohub.ai`.
+
+This skill covers ESM C, ESMFold2, and legacy ESM2. ESM3 is not covered because its
+open weights are non-commercial.
+
+## Which model to use
+
+| Task | Model |
+|------|-------|
+| Embeddings, PLL, mutation scoring | ESM C (ESMC-6B), or ESM2 for a lighter run |
+| Complex structure prediction | ESMFold2 |
+| High-throughput single-sequence folding | ESMFold2 fast mode |
+| Binder design | ESMFold2 inversion (see below), or the `mosaic` / `bindcraft` skills |
+| Variant effect / zero-shot scoring | ESM C or ESM2 |
 
 ## Prerequisites
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
-| Python | 3.8+ | 3.10 |
-| PyTorch | 1.10+ | 2.0+ |
-| CUDA | 11.0+ | 11.7+ |
-| GPU VRAM | 8GB | 24GB (A10G) |
-| RAM | 16GB | 32GB |
+| Python | 3.10+ | 3.11 |
+| PyTorch | 2.0+ | Latest |
+| CUDA | 12.0+ | 12.1+ |
+| GPU VRAM | 24GB (ESM2 / small ESMC) | 80GB (ESMC-6B, ESMFold2) |
 
-## How to run
+## ESM C: embeddings and scoring
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+ESM C is the successor to ESM2. It improves long-range structural understanding as
+model scale grows and is the default choice for embeddings, pseudo-log-likelihood,
+and mutation-effect scoring.
 
-### Option 1: Modal
-```bash
-cd biomodals
-modal run modal_esm2_predict_masked.py \
-  --input-faa sequences.fasta \
-  --out-dir embeddings/
-```
-
-**GPU**: A10G (24GB) | **Timeout**: 300s default
-
-### Option 2: Python API (recommended)
+### Python (Hugging Face)
 ```python
+from transformers import AutoModelForMaskedLM, AutoTokenizer
 import torch
-import esm
 
-# Load model
-model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
-batch_converter = alphabet.get_batch_converter()
-model = model.eval().cuda()
+model_id = "biohub/ESMC-6B"
+tok = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForMaskedLM.from_pretrained(
+    model_id, output_hidden_states=True, torch_dtype=torch.bfloat16
+).eval().cuda()
 
-# Process sequences
-data = [("seq1", "MKTAYIAKQRQISFVK...")]
-batch_labels, batch_strs, batch_tokens = batch_converter(data)
-
+batch = tok(["MKTAYIAKQRQISFVK..."], return_tensors="pt").to("cuda")
 with torch.no_grad():
-    results = model(batch_tokens.cuda(), repr_layers=[33])
+    out = model(**batch)
 
-# Get embeddings
-embeddings = results["representations"][33]
+logits = out.logits                      # for PLL / mutation scoring
+embeddings = out.hidden_states[-1]       # per-residue representations
 ```
 
-## Key parameters
+### Hosted API
+```python
+from esm.sdk import client
 
-### ESM2 Models
-
-| Model | Parameters | Speed | Quality |
-|-------|------------|-------|---------|
-| esm2_t6_8M | 8M | Fastest | Fast screening |
-| esm2_t12_35M | 35M | Fast | Good |
-| esm2_t33_650M | 650M | Medium | Better |
-| esm2_t36_3B | 3B | Slow | Best |
-
-## Output format
-
-```
-embeddings/
-├── embeddings.npy       # (N, 1280) array
-├── pll_scores.csv       # PLL for each sequence
-└── metadata.json        # Sequence info
+model = client("esmc-600m-2024-12", url="https://biohub.ai")
 ```
 
-## Sample output
+ESMC-6B has open weights; `esmc-600m` is the smaller API model. For mutation
+scoring and fine-tuning, see the `esmc_mutation_scoring` and `esmc_finetune`
+notebooks under [cookbook/tutorials](https://github.com/Biohub/esm/tree/main/cookbook/tutorials).
 
-### Successful run
-```
-$ modal run modal_esm2_predict_masked.py --input-faa designs.fasta
-[INFO] Loading ESM2-650M model...
-[INFO] Processing 100 sequences...
-[INFO] Computing pseudo-log-likelihood...
+## ESMFold2: complex structure prediction
 
-embeddings/pll_scores.csv:
-sequence_id,pll,pll_normalized,length
-design_0,-0.82,0.15,78
-design_1,-0.95,0.08,85
-design_2,-1.23,-0.12,72
-...
+ESMFold2 is built on ESMC-6B with a diffusion structure head. Unlike the original
+ESMFold, it predicts complexes (protein, DNA, ligand, and modified residues), takes
+an optional MSA, and has a single-sequence fast mode for high-throughput screening.
+It is validated for protein-protein interaction design and leads DockQ pass-rate on
+Foldbench protein-protein and antibody-antigen complexes.
 
-Summary:
-  Mean PLL: -0.91
-  Sequences with PLL > 0: 42/100 (42%)
+### Modal
+```bash
+# https://modal.com/docs/examples/esmfold2
+modal run esmfold2.py --sequence "MKTAYIAKQRQISFVK..."
 ```
 
-**What good output looks like:**
-- PLL_normalized: > 0.0 (more natural-like)
-- Embeddings shape: (N, 1280) for 650M model
-- Higher PLL = more natural sequence
+### Python (Hugging Face)
+```python
+from esm.models.esmfold2 import ESMFold2
 
-## Decision tree
+model = ESMFold2.from_pretrained("biohub/ESMFold2").eval().cuda()
+out = model.fold(sequences=["BINDER_SEQ", "TARGET_SEQ"])   # outputs CIF + pLDDT/pTM/ipTM
+```
 
+Use the `esmfold2-fast-2026-05` variant in single-sequence mode for an order of
+magnitude speedup when screening many designs. ESMFold2 is one option for complex
+validation alongside `boltz` and `chai`; ranking a shortlist across more than one
+predictor is more reliable than trusting a single model.
+
+## Binder design by inverting ESMFold2
+
+The [binder_design cookbook](https://github.com/Biohub/esm/blob/main/cookbook/tutorials/binder_design.ipynb)
+runs gradient optimization through ESMFold2 (a BindCraft-style loop), with an ESMC
+language-model term for sequence plausibility. The published protocol is validated
+in the lab to nanomolar affinity across five targets and supports both minibinders
+and antibody-derived scFvs with framework scaffolds.
+
+- Prompt positions to design with `#`; fix the rest as amino acids.
+- Optimize a soft sequence with Adam (about 150 steps, temperature anneal).
+- Rank candidates by ipTM, filter minibinders to pI below 6, then validate the top
+  shortlist with `boltz` or `chai` and rank with `ipsae`.
+
+For a more general framework that composes ESMFold2 with other predictors in one
+objective, use the `mosaic` skill.
+
+## ESM2 (legacy)
+
+ESM2 still works well for quick embeddings and PLL when ESMC-6B is too large for the
+available GPU.
+
+```python
+import torch, esm
+model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
+bc = alphabet.get_batch_converter()
+model = model.eval().cuda()
+_, _, toks = bc([("seq1", "MKTAYIAKQRQISFVK...")])
+with torch.no_grad():
+    rep = model(toks.cuda(), repr_layers=[33])["representations"][33]
 ```
-Should I use ESM2?
-│
-├─ What do you need?
-│  ├─ Sequence plausibility score → ESM2 PLL ✓
-│  ├─ Embeddings for clustering → ESM2 ✓
-│  ├─ Variant effect prediction → ESM2 ✓
-│  └─ Structure prediction → Use ESMFold
-│
-├─ What model size?
-│  ├─ Fast screening → esm2_t12_35M
-│  ├─ Standard use → esm2_t33_650M ✓
-│  └─ Best quality → esm2_t36_3B
-│
-└─ Use case?
-   ├─ QC filtering → PLL > 0.0 threshold
-   ├─ Diversity analysis → Mean-pooled embeddings
-   └─ Mutation scanning → Per-position log-odds
-```
+
+| Model | Parameters | Use |
+|-------|------------|-----|
+| esm2_t12_35M | 35M | Fast screening |
+| esm2_t33_650M | 650M | Standard embeddings/PLL |
+| esm2_t36_3B | 3B | Highest-quality ESM2 |
 
 ## PLL interpretation
 
+PLL (pseudo-log-likelihood) scores how natural a sequence looks to the model. Higher
+is more natural. Designed sequences often score lower than natural ones, so treat PLL
+as a soft filter, not a hard cutoff.
+
 | Normalized PLL | Interpretation |
 |----------------|----------------|
-| > 0.2 | Very natural sequence |
-| 0.0 - 0.2 | Good, natural-like |
-| -0.5 - 0.0 | Acceptable |
+| > 0.2 | Very natural |
+| 0.0 to 0.2 | Natural-like |
+| -0.5 to 0.0 | Acceptable |
 | < -0.5 | May be unnatural |
-
-## Typical performance
-
-| Campaign Size | Time (A10G) | Cost (Modal) | Notes |
-|---------------|-------------|--------------|-------|
-| 100 sequences | 5-10 min | ~$1 | Quick screen |
-| 1000 sequences | 30-60 min | ~$5 | Standard |
-| 5000 sequences | 2-3h | ~$20 | Large batch |
-
-**Throughput**: ~100-200 sequences/minute with 650M model.
-
----
-
-## Verify
-
-```bash
-wc -l embeddings/pll_scores.csv  # Should match input + 1 (header)
-```
-
----
 
 ## Troubleshooting
 
-**OOM errors**: Use smaller model or batch sequences
-**Slow processing**: Use esm2_t12_35M for speed
-**Low PLL scores**: May indicate unusual/designed sequences
-
-### Error interpretation
-
-| Error | Cause | Fix |
+| Issue | Cause | Fix |
 |-------|-------|-----|
-| `RuntimeError: CUDA out of memory` | Sequence too long or large batch | Reduce batch size |
-| `KeyError: representation` | Wrong layer requested | Use layer 33 for 650M model |
-| `ValueError: sequence` | Invalid amino acid | Check for non-standard AAs |
+| CUDA out of memory | ESMC-6B / ESMFold2 too large | Use ESMC-600m API, ESM2, or an 80GB GPU |
+| Wrong layer for embeddings | Layer index mismatch | Use the last hidden state (layer 33 for ESM2-650M) |
+| Invalid amino acid | Non-standard residue | Check for non-canonical characters |
+| Slow ESMFold2 on many designs | Full MSA mode | Use `esmfold2-fast-2026-05` single-sequence mode |
 
 ---
 
-**Next**: Structure prediction with `chai` or `boltz` → `protein-qc` for filtering.
+**Next**: Validate structures with `boltz` or `chai`, rank with `ipsae`, then filter
+with `protein-qc`.

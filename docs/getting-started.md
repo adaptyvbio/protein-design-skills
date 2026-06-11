@@ -80,7 +80,7 @@ Options:
 curl -o target.pdb https://files.rcsb.org/download/1ALU.pdb
 ```
 
-### Run BoltzGen (Recommended Pipeline)
+### Run BoltzGen
 ```bash
 uvx modal run modal_boltzgen.py --target target.pdb --num-designs 5
 ```
@@ -98,7 +98,7 @@ Expected output:
 
 ### Design
 ```bash
-# BoltzGen (recommended - all-atom)
+# BoltzGen (all-atom, single-step)
 uvx modal run modal_boltzgen.py --target target.pdb --num-designs 50
 
 # RFdiffusion (backbone generation)
@@ -171,6 +171,6 @@ First run downloads model weights (~5-10 min). Subsequent runs are faster.
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 22 skills
 - [Standard pipeline](standard-pipeline.md) - Full workflow details
 - [Compute setup](compute-setup.md) - Modal vs local setup

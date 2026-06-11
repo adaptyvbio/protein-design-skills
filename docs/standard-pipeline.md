@@ -2,14 +2,19 @@
 
 End-to-end protein binder design workflow.
 
-## Recommended: BoltzGen pipeline
+No single design tool is best for every target. This page walks through a BoltzGen
+pipeline and an RFdiffusion alternative; pick by target type and compute. BindCraft
+and Mosaic are also options (see the `binder-design` skill).
+
+## BoltzGen pipeline
 
 ```
 Target → BoltzGen → Validate → Filter → Experiment
  (pdb)  (all-atom)   (chai)     (qc)    (cfps/spr)
 ```
 
-BoltzGen provides all-atom design with built-in side-chain packing - no separate sequence design step needed.
+BoltzGen provides all-atom design with built-in side-chain packing, so it needs no
+separate sequence design step.
 
 ### Why BoltzGen?
 - **All-atom output**: Backbone + sequence + side chains in one step
@@ -46,7 +51,7 @@ io.save('target_chainA.pdb', ChainSelect())
 - [ ] Residue numbering verified
 - [ ] 3-6 hotspots identified (surface-exposed)
 
-## Phase 2: Design with BoltzGen (recommended)
+## Phase 2: Design with BoltzGen
 
 **Skill**: `boltzgen`
 
@@ -125,7 +130,7 @@ print(f"Passing: {len(passing)}")  # Expect 10-15% pass rate
 
 ## Timeline comparison
 
-### BoltzGen pipeline (recommended)
+### BoltzGen pipeline
 | Phase | Tool | Time | Output |
 |-------|------|------|--------|
 | Target prep | pdb | 10 min | 1 PDB |
@@ -164,6 +169,6 @@ After filtering:
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 22 skills
 - [Getting started](getting-started.md) - Setup guide
 - [Compute setup](compute-setup.md) - Modal vs local setup

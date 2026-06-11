@@ -30,7 +30,7 @@ biomodals_script: modal_alphafold.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
 ### Option 1: ColabFold (recommended for multimer)
 ```bash

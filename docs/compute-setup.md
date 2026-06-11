@@ -100,6 +100,6 @@ First run downloads model weights. Subsequent runs are faster.
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 22 skills
 - [Getting started](getting-started.md) - Setup guide
 - [Standard pipeline](standard-pipeline.md) - Full workflow

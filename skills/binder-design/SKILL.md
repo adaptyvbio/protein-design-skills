@@ -18,45 +18,44 @@ tags: [guidance, tool-selection, workflow]
 
 ## Decision tree
 
+No single tool is best for every target. Pick by target type, what you want to
+control, and available compute.
+
 ```
 De novo binder design?
 │
-├─ Standard target → BoltzGen (recommended)
-│   All-atom output (no separate ProteinMPNN step needed)
-│   Better for ligand/small molecule binding
+├─ All-atom design or ligand/small-molecule binding → BoltzGen
+│   All-atom output (no separate ProteinMPNN step)
 │   Single-step design (backbone + sequence + side chains)
+│   Higher GPU requirement
 │
-├─ Need diversity/exploration → RFdiffusion + ProteinMPNN
-│   Maximum backbone diversity
-│   Two-step: backbone then sequence
+├─ Diversity / exploration → RFdiffusion + ProteinMPNN
+│   Maximum backbone diversity, two-step
 │
-├─ Integrated validation → BindCraft
-│   Built-in AF2 validation
-│   End-to-end pipeline
+├─ End-to-end with built-in validation → BindCraft
+│   AF2 validation in the loop
 │
-├─ Ligand binding → BoltzGen ✓
-│   All-atom diffusion handles ligand context
+├─ Custom multi-model objective → Mosaic
+│   Gradient optimization, compose several predictors
 │
-├─ Peptide/nanobody → Germinal
-│   VHH/nanobody design
-│   Germline-aware optimization
-│
-└─ Antibody/Nanobody
-    +-- VHH design --> germinal skill
+└─ Antibody / nanobody (VHH)
+    External tools, not yet packaged as skills:
+    Germinal and RFantibody
 ```
 
 ## Tool comparison
 
 | Tool | Strengths | Weaknesses | Best For |
 |------|-----------|------------|----------|
-| BoltzGen | All-atom, single-step, ligand-aware | Higher GPU requirement | Standard (recommended) |
+| BoltzGen | All-atom, single-step, ligand-aware | Higher GPU requirement | All-atom and ligand binding |
 | BindCraft | End-to-end, built-in AF2 validation | Less diverse | Production campaigns |
 | RFdiffusion | High diversity, fast | Requires ProteinMPNN | Exploration, diversity |
-| Germinal | Nanobody/VHH design | Specialized | Antibody optimization |
+| Mosaic | Compose any predictors, custom loss | Needs tuning, no default filters | Custom objectives |
 
-## Recommended Pipeline: BoltzGen → Chai → QC
+## Example pipeline: BoltzGen → Chai → QC
 
-BoltzGen provides all-atom design with built-in side-chain packing:
+BoltzGen provides all-atom design with built-in side-chain packing. This is one
+solid path; swap in RFdiffusion, BindCraft, or Mosaic depending on the target.
 
 ```
 Target → BoltzGen → Validate → Filter
@@ -77,7 +76,7 @@ Target → BoltzGen → Validate → Filter
 - Prefer charged/aromatic residues
 - Cluster spatially (within 10-15A)
 
-### 3. Design with BoltzGen (Recommended)
+### 3. Design with BoltzGen
 
 First, create a YAML config file (e.g., `binder.yaml`):
 ```yaml

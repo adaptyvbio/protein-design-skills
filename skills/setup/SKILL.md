@@ -156,4 +156,4 @@ Modal offers $30/month in free credits - enough for:
 
 ---
 
-**Full documentation**: See [Installation Guide](../../docs/installation.md)
+**Full documentation**: See [Getting started](../../docs/getting-started.md)

@@ -29,7 +29,7 @@ biomodals_script: modal_ligandmpnn.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
 ### Option 1: Modal (recommended)
 ```bash
