@@ -37,7 +37,7 @@ Campaign failing?
 |-------|-------|-----|
 | `CUDA out of memory` | GPU VRAM exceeded | Use A100 or reduce batch |
 | `KeyError: 'A'` | Chain not in PDB | Check chain IDs |
-| `ValueError: invalid contig` | Syntax error | Remove spaces, quotes, commas |
+| `ValueError: invalid contig` | Syntax error | Keep the `/0`; single-quote the whole arg |
 | `FileNotFoundError: ckpt` | Missing weights | Download from IPD |
 
 ### ProteinMPNN
@@ -68,22 +68,22 @@ Campaign failing?
 ### Contig syntax
 ```bash
 # WRONG
-contigmap.contigs=[A1-150 70-100]     # Missing /0
-contigmap.contigs="A1-150/0 70-100"   # Quotes break parsing
-contigmap.contigs=[A1-150/0, 70-100]  # Comma breaks parsing
+contigmap.contigs=[A1-150 70-100]       # Missing /0
+contigmap.contigs=[A1-150/0 70-100]     # Unquoted: shell splits on the space
+contigmap.contigs=[A1-150/0, 70-100]    # Extra comma changes the contig
 
 # CORRECT
-contigmap.contigs=[A1-150/0 70-100]
+'contigmap.contigs=[A1-150/0 70-100]'   # Single-quote the whole argument
 ```
 
 ### Hotspot syntax
 ```bash
 # WRONG
-ppi.hotspot_res=[45,67,89]           # Missing chain letter
-ppi.hotspot_res=[A45, A67, A89]      # Spaces break parsing
+ppi.hotspot_res=[45,67,89]             # Missing chain letter
+'ppi.hotspot_res=[A45, A67, A89]'      # Spaces inside the list break parsing
 
 # CORRECT
-ppi.hotspot_res=[A45,A67,A89]
+'ppi.hotspot_res=[A45,A67,A89]'        # Single-quote the whole argument
 ```
 
 ### Temperature format
