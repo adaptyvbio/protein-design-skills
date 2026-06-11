@@ -38,47 +38,40 @@ biomodals_script: modal_bindcraft.py
 ```bash
 cd biomodals
 modal run modal_bindcraft.py \
-  --target-pdb target.pdb \
-  --target-chain A \
-  --binder-lengths 70-100 \
-  --hotspots "A45,A67,A89" \
-  --num-designs 50
+  --input-pdb target.pdb \
+  --target-chains A \
+  --target-hotspot-residues "45,67,89" \
+  --lengths "70,100" \
+  --number-of-final-designs 50
 ```
 
-**GPU**: L40S (48GB) | **Timeout**: 3600s default
+**GPU**: L40S (48GB) | **Timeout**: 300 min default
 
 ### Option 2: Local installation
 ```bash
 git clone https://github.com/martinpacesa/BindCraft.git
 cd BindCraft
-pip install -r requirements.txt
 
-python bindcraft.py \
-  --target target.pdb \
-  --target_chains A \
-  --binder_lengths 70-100 \
-  --hotspots A45,A67,A89 \
-  --num_designs 50
+# BindCraft is configured with JSON files, not flags
+python -u ./bindcraft.py \
+  --settings ./settings_target/mytarget.json \
+  --filters ./settings_filters/default_filters.json \
+  --advanced ./settings_advanced/default_4stage_multimer.json
 ```
 
-## Key parameters
+The target PDB, chains, hotspots, and binder length range are set inside the
+`--settings` JSON. See the BindCraft repo for the settings schema.
 
-| Parameter | Default | Range | Description |
-|-----------|---------|-------|-------------|
-| `--target-pdb` | required | path | Target structure |
-| `--target-chain` | required | A-Z | Target chain(s) |
-| `--binder-lengths` | 70-100 | 40-150 | Length range |
-| `--hotspots` | None | residues | Target hotspots |
-| `--num-designs` | 50 | 1-500 | Number of designs |
-| `--protocol` | default | fast/default/slow | Quality vs speed |
+## Key parameters (Modal wrapper)
 
-## Protocols
-
-| Protocol | Speed | Quality | Use Case |
-|----------|-------|---------|----------|
-| fast | Fast | Lower | Initial screening |
-| default | Medium | Good | Standard campaigns |
-| slow | Slow | High | Final production |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--input-pdb` | required | Target structure |
+| `--target-chains` | `A` | Target chain(s) |
+| `--target-hotspot-residues` | "" | Target hotspots (e.g. "45,67,89") |
+| `--lengths` | `50,130` | Binder length range |
+| `--number-of-final-designs` | 1 | Passing designs to return |
+| `--max-trajectories` | none | Cap on trajectories |
 
 ## Output format
 
@@ -110,12 +103,11 @@ output/
 
 ### Successful run
 ```
-$ modal run modal_bindcraft.py --target-pdb target.pdb --num-designs 50
+$ modal run modal_bindcraft.py --input-pdb target.pdb --target-chains A --target-hotspot-residues "45,67,89" --number-of-final-designs 50
 [INFO] Loading BindCraft model...
 [INFO] Target: target.pdb (chain A)
-[INFO] Hotspots: A45, A67, A89
-[INFO] Protocol: default
-[INFO] Generating 50 designs...
+[INFO] Hotspots: 45, 67, 89
+[INFO] Generating designs...
 
 Design 1/50:
   Length: 78 AA

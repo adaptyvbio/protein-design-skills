@@ -32,48 +32,46 @@ biomodals_script: modal_ligandmpnn.py
 > **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
 ### Option 1: Modal (recommended)
-SolubleMPNN uses the ProteinMPNN Modal wrapper with soluble model:
+SolubleMPNN is the soluble model type within the LigandMPNN wrapper:
 ```bash
 cd biomodals
 modal run modal_ligandmpnn.py \
-  --pdb-path backbone.pdb \
-  --num-seq-per-target 16 \
-  --sampling-temp 0.1 \
-  --model-name v_48_020
+  --input-pdb backbone.pdb \
+  --params-str "--model_type soluble_mpnn --number_of_batches 16 --temperature 0.1"
 ```
 
-**GPU**: T4 (16GB) | **Timeout**: 600s default
+**GPU**: A10G default | **Timeout**: 900s default
 
 ### Option 2: Local installation
 ```bash
 git clone https://github.com/dauparas/ProteinMPNN.git
 cd ProteinMPNN
 
-# Use soluble model weights
+# The soluble weights are selected with --use_soluble_model, not a model name
 python protein_mpnn_run.py \
   --pdb_path backbone.pdb \
   --out_folder output/ \
   --num_seq_per_target 16 \
   --sampling_temp "0.1" \
-  --model_name "v_48_020"  # Soluble model
+  --use_soluble_model
 ```
 
 ## Key parameters
 
-| Parameter | Default | Range | Description |
-|-----------|---------|-------|-------------|
-| `--pdb_path` | required | path | Input structure |
-| `--num_seq_per_target` | 1 | 1-1000 | Sequences per structure |
-| `--sampling_temp` | "0.1" | "0.0001-1.0" | Temperature (string!) |
-| `--model_name` | v_48_020 | string | Soluble model variant |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--pdb_path` | required | Input structure |
+| `--use_soluble_model` | off | Use the solubility-trained weights |
+| `--num_seq_per_target` | 1 | Sequences per structure |
+| `--sampling_temp` | "0.1" | Temperature (string) |
+| `--model_name` | v_48_020 | Noise level (0.20 A); orthogonal to solubility |
 
-## Model Variants
+## Model weights
 
-| Model | Description | Use Case |
-|-------|-------------|----------|
-| v_48_002 | Standard | General design |
-| v_48_020 | Soluble-trained | E. coli expression |
-| v_48_030 | High solubility | Difficult targets |
+`--model_name` sets the training-noise level (v_48_002 = 0.02 A, v_48_010 = 0.10 A,
+v_48_020 = 0.20 A), not a solubility tier. Solubility is a separate weight set chosen
+with `--use_soluble_model`, available for v_48_010 and v_48_020. Higher noise gives
+more sequence diversity.
 
 ## Output format
 
@@ -87,7 +85,7 @@ output/
 
 ### Successful run
 ```
-$ python protein_mpnn_run.py --pdb_path backbone.pdb --model_name v_48_020 --num_seq_per_target 8
+$ python protein_mpnn_run.py --pdb_path backbone.pdb --use_soluble_model --num_seq_per_target 8
 Loading soluble model weights (v_48_020)...
 Designing sequences for backbone.pdb
 Generated 8 sequences in 2.1 seconds
@@ -123,9 +121,8 @@ Should I use SolubleMPNN?
 │  ├─ Small molecule / ligand → Use LigandMPNN
 │  └─ Nothing / protein only → SolubleMPNN ✓
 │
-└─ Need highest solubility?
-   ├─ Yes → Use v_48_030 model
-   └─ Standard → Use v_48_020 model
+└─ Optimizing for expression?
+   └─ Add --use_soluble_model to ProteinMPNN
 ```
 
 ## Typical performance
@@ -149,7 +146,7 @@ grep -c "^>" output/seqs/*.fa  # Should match backbone_count × num_seq_per_targ
 
 ## Troubleshooting
 
-**Still insoluble**: Try v_48_030 (higher solubility bias)
+**Still insoluble**: Confirm `--use_soluble_model` is set; redesign more positions or add explicit hydrophobic-residue bias
 **Low diversity**: Increase temperature to 0.2
 **Poor folding**: Use standard ProteinMPNN and optimize later
 

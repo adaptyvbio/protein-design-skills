@@ -8,8 +8,8 @@ Master decision tree for choosing the right protein design tool.
 What are you designing?
 │
 ├─ Miniprotein binder (60-100 AA)
-│  ├─ Highest hit-rate, willing to tune → mosaic
-│  ├─ Cheap, turnkey, all-atom default → boltzgen
+│  ├─ Lowest cost/effort default → boltzgen
+│  ├─ Hard/important target, can tune → mosaic
 │  ├─ Diversity/exploration → rfdiffusion
 │  └─ End-to-end with validation → bindcraft
 │
@@ -22,10 +22,12 @@ What are you designing?
 │
 └─ Structure prediction (validation)
    ├─ Need open weights → boltz, chai, or protenix
+   ├─ Antibody-antigen complex → protenix-v2
    └─ Need highest accuracy → alphafold
 ```
 
-Hit-rate is target-dependent; see the `binder-design` skill for head-to-head results.
+Hit-rate is target-dependent for every method and you cannot know a priori which wins;
+pick by cost/effort to a binder. See the `binder-design` skill for head-to-head results.
 
 ## Tool comparison
 
@@ -33,8 +35,8 @@ Hit-rate is target-dependent; see the `binder-design` skill for head-to-head res
 
 | Tool | Method | Strengths | Weaknesses | Best For |
 |------|--------|-----------|------------|----------|
-| mosaic | Gradient, multi-model | Highest competition hit-rate | Needs tuning, local JAX | Hard targets |
-| boltzgen | All-atom diffusion | Cheap, turnkey, side-chain aware | Lower hit-rate on hard targets | Budget default |
+| boltzgen | All-atom diffusion | Cheap, turnkey, side-chain aware | One model in the loop | Lowest cost/effort default |
+| mosaic | Gradient, multi-model | Composable objective, won hard head-to-heads | Needs tuning, local JAX | Hard/important targets |
 | rfdiffusion | Diffusion | High diversity | Needs ProteinMPNN; not in biomodals | Exploration |
 | bindcraft | End-to-end | Built-in AF2 validation | Less diverse | Production |
 | germinal | Hallucination + AbMPNN | Antibody / nanobody formats | Finicky | scFv / VHH |
@@ -53,7 +55,7 @@ Hit-rate is target-dependent; see the `binder-design` skill for head-to-head res
 |------|-----|-------|----------|
 | chai | No | ~20-40s | Speed + ligands |
 | boltz | No | ~15-30s | Open weights, Boltz-2 affinity |
-| protenix | Optional | ~60s+ | Open AF3 reproduction |
+| protenix | Optional | ~60s+ | Open AF3 reproduction; v2 for antibody-antigen |
 | alphafold | Yes | ~60s+ | High accuracy |
 
 ## Recommended combinations

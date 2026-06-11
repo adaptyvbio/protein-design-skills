@@ -203,8 +203,8 @@ Mass transport limitation occurs when analyte cannot diffuse to the surface fast
 - [ ] Fitted Rmax reasonable (close to theoretical)
 
 ### Red flags
-- kon approaching mass transport limit (>10^7 M^-1s^-1)
-- koff faster than data acquisition (< 0.01 s^-1 requires faster sampling)
+- kon approaching the mass transport limit (>10^7 M^-1s^-1), where rates are unreliable
+- koff too fast to sample (> 0.1 s^-1) or too slow to measure in the dissociation window (< 10^-5 s^-1)
 - Rmax >> theoretical maximum (aggregation or avidity)
 - Large difference between kinetic and equilibrium KD
 

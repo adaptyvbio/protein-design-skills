@@ -25,7 +25,7 @@ biomodals_script: modal_boltzgen.py
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
-| Python | 3.10+ | 3.11 |
+| Python | 3.11+ | 3.12 |
 | CUDA | 12.0+ | 12.1+ |
 | GPU VRAM | 24GB | 48GB (L40S) |
 | RAM | 32GB | 64GB |
@@ -60,22 +60,17 @@ GPU=L40S modal run modal_boltzgen.py \
 ```bash
 git clone https://github.com/HannesStark/boltzgen.git
 cd boltzgen
-pip install -e .
+pip install boltzgen   # or: pip install -e .
 
-python sample.py config=config.yaml
+# Driven by the boltzgen CLI with a YAML design spec
+boltzgen run binder_config.yaml \
+  --output out/ \
+  --protocol protein-anything \
+  --num_designs 50
 ```
 
-### Option 3: Python API
-```python
-from boltzgen import BoltzGen
-
-model = BoltzGen.load_pretrained()
-designs = model.sample(
-    target_pdb="target.pdb",
-    num_samples=50,
-    binder_length=80
-)
-```
+The first run downloads model weights (~6GB) to `~/.cache`. Verify a spec with
+`boltzgen check binder_config.yaml` before a full run.
 
 **GPU**: L40S (48GB) | **Time**: ~30-60s per design
 

@@ -62,9 +62,9 @@ python run_inference.py \
 ### Option B: BindCraft (End-to-End)
 ```bash
 modal run modal_bindcraft.py \
-    --target-pdb target_prepared.pdb \
-    --hotspots "A45,A67,A89" \
-    --num-designs 100
+    --input-pdb target_prepared.pdb \
+    --target-hotspot-residues "45,67,89" \
+    --number-of-final-designs 100
 ```
 
 **Output**: 100 designed binders with sequences
@@ -78,9 +78,8 @@ modal run modal_bindcraft.py \
 # Batch process all backbones
 for backbone in backbones/*.pdb; do
     modal run modal_ligandmpnn.py \
-        --pdb-path "$backbone" \
-        --num-seq-per-target 8 \
-        --sampling-temp 0.1
+        --input-pdb "$backbone" \
+        --params-str "--number_of_batches 8 --temperature 0.1"
 done
 ```
 
@@ -101,7 +100,7 @@ def make_complex_fasta(binder_seq, target_seq, output_path):
 ### Run validation
 ```bash
 modal run modal_alphafold.py \
-    --input-faa all_complexes.fasta \
+    --input-fasta all_complexes.fasta \
     --out-dir predictions/
 ```
 
@@ -156,7 +155,7 @@ top_designs = designs.nlargest(100, 'score')
 |-------|-----|-------------------|
 | RFdiffusion | A10G | 2-3 hours |
 | ProteinMPNN | T4 | 1-2 hours |
-| ColabFold | A100 | 12-24 hours |
+| Chai / AlphaFold | A100 | 12-24 hours |
 | Filtering | CPU | 30 min |
 
 **Total**: 16-30 hours for 500 backbone campaign

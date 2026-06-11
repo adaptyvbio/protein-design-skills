@@ -71,9 +71,9 @@ python run_inference.py \
 ### Option B: BindCraft (end-to-end)
 ```bash
 modal run modal_bindcraft.py \
-  --target-pdb target_prepared.pdb \
-  --hotspots "A45,A67,A89" \
-  --num-designs 100
+  --input-pdb target_prepared.pdb \
+  --target-hotspot-residues "45,67,89" \
+  --number-of-final-designs 100
 ```
 
 **Output**: 100-500 backbone PDBs
@@ -84,9 +84,8 @@ modal run modal_bindcraft.py \
 ```bash
 for backbone in backbones/*.pdb; do
   modal run modal_ligandmpnn.py \
-    --pdb-path "$backbone" \
-    --num-seq-per-target 8 \
-    --sampling-temp 0.1
+    --input-pdb "$backbone" \
+    --params-str "--number_of_batches 8 --temperature 0.1"
 done
 ```
 
@@ -100,7 +99,7 @@ done
 # binder:target format for multimer
 
 modal run modal_alphafold.py \
-  --input-faa all_sequences.fasta \
+  --input-fasta all_sequences.fasta \
   --out-dir predictions/
 ```
 
@@ -145,7 +144,7 @@ top_designs = filtered.nlargest(50, 'score')
 |-------|-----|-------------------|
 | RFdiffusion | A10G | 30 min |
 | ProteinMPNN | T4 | 15 min |
-| ColabFold | A100 | 4-8 hours |
+| Chai / AlphaFold | A100 | 4-8 hours |
 | Filtering | CPU | 15 min |
 
 ### Total timeline
@@ -189,7 +188,7 @@ top_designs = filtered.nlargest(50, 'score')
 
 ### Multi-tool combination
 1. RFdiffusion for initial backbones
-2. ColabDesign for refinement
+2. Mosaic for gradient-based refinement
 3. ProteinMPNN diversification
 4. AF2 final validation
 

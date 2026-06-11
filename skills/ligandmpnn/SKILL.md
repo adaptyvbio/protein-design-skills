@@ -34,13 +34,13 @@ biomodals_script: modal_ligandmpnn.py
 ### Option 1: Modal (recommended)
 ```bash
 cd biomodals
+# modal_ligandmpnn.py takes --input-pdb; LigandMPNN run.py args go in --params-str
 modal run modal_ligandmpnn.py \
-  --pdb-path protein_ligand.pdb \
-  --num-seq-per-target 16 \
-  --sampling-temp 0.1
+  --input-pdb protein_ligand.pdb \
+  --params-str "--model_type ligand_mpnn --number_of_batches 16 --temperature 0.1"
 ```
 
-**GPU**: T4 (16GB) | **Timeout**: 600s default
+**GPU**: A10G default | **Timeout**: 900s default
 
 ### Option 2: Local installation
 ```bash
@@ -48,19 +48,23 @@ git clone https://github.com/dauparas/LigandMPNN.git
 cd LigandMPNN
 
 python run.py \
+  --model_type ligand_mpnn \
   --pdb_path protein_ligand.pdb \
   --out_folder output/ \
-  --num_seq_per_target 16
+  --number_of_batches 16 \
+  --temperature 0.1
 ```
 
-## Key parameters
+## Key parameters (LigandMPNN run.py)
 
-| Parameter | Default | Range | Description |
-|-----------|---------|-------|-------------|
-| `--pdb_path` | required | path | PDB with ligand |
-| `--num_seq_per_target` | 1 | 1-1000 | Sequences per structure |
-| `--sampling_temp` | "0.1" | "0.0001-1.0" | Temperature (string!) |
-| `--ligand_mpnn_use_side_chain_context` | true | bool | Use ligand context |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--pdb_path` | required | PDB with ligand |
+| `--model_type` | `protein_mpnn` | `ligand_mpnn`, `soluble_mpnn`, etc. |
+| `--temperature` | 0.1 | Sampling temperature |
+| `--number_of_batches` | 1 | Batches (sequences = batch_size x batches) |
+| `--batch_size` | 1 | Sequences per batch |
+| `--ligand_mpnn_use_side_chain_context` | 0 | Use ligand side-chain context |
 
 ## Ligand Specification
 

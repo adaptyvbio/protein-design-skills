@@ -27,9 +27,9 @@ tags: [ranking, scoring, binding]
 
 ## Overview
 
-ipSAE (interprotein Score from Aligned Errors) is a scoring function for ranking protein-protein interactions predicted by AlphaFold2, AlphaFold3, and Boltz1. It outperforms ipTM and iPAE for binder design ranking with **1.4x higher precision** in identifying true binders.
+ipSAE (interprotein Score from Aligned Errors) is a scoring function for ranking protein-protein interactions predicted by AlphaFold2, AlphaFold3, and Boltz1. It separates true from false predicted complexes more reliably than ipTM, which dilutes interface confidence across disordered or accessory regions. In a separate binder meta-analysis (Overath et al. 2025), AF3 ipSAE_min gave a 1.4-fold gain in average precision over the ipAE score that RFdiffusion pipelines commonly filter on.
 
-**Paper**: [What's wrong with AlphaFold's ipTM score](https://www.biorxiv.org/content/10.1101/2025.02.10.637595v2)
+**Paper**: Dunbrack, "Rēs ipSAE loquuntur: What's wrong with AlphaFold's ipTM score and how to fix it", [bioRxiv 2025.02.10.637595](https://www.biorxiv.org/content/10.1101/2025.02.10.637595v2)
 
 ## How to run
 

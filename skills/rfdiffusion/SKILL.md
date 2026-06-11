@@ -38,16 +38,23 @@ its Docker image, not through Modal.
 ### Local installation (official repo)
 ```bash
 git clone https://github.com/RosettaCommons/RFdiffusion.git
-cd RFdiffusion && pip install -e .
+cd RFdiffusion
 
-# Download weights
-wget http://files.ipd.uw.edu/pub/RFdiffusion/models/Complex_base_ckpt.pt
+# Conda env including the required NVIDIA SE(3)-Transformer
+conda env create -f env/SE3nv.yml
+conda activate SE3nv
+cd env/SE3Transformer && pip install . && cd ../..
+pip install -e .
 
-# Binder design run
-python run_inference.py \
+# Download weights (per-file hashed paths; see the repo README for the full list)
+mkdir -p models
+wget -P models http://files.ipd.uw.edu/pub/RFdiffusion/e29311f6f1bf1af907f9ef9f44b8328b/Complex_base_ckpt.pt
+
+# Binder design run; single-quote the hydra args so the shell does not split [] or ,
+./scripts/run_inference.py \
   inference.input_pdb=target.pdb \
-  contigmap.contigs=[A1-150/0 70-100] \
-  ppi.hotspot_res=[A45,A67,A89] \
+  'contigmap.contigs=[A1-150/0 70-100]' \
+  'ppi.hotspot_res=[A45,A67,A89]' \
   inference.num_designs=100
 ```
 
@@ -85,27 +92,29 @@ ppi.hotspot_res=[A45,A67,A89]
 ### Contig Syntax
 ✅ **Correct**:
 ```bash
-contigmap.contigs=[A1-150/0 70-100]  # Target fixed (/0), binder variable
+'contigmap.contigs=[A1-150/0 70-100]'  # Target fixed (/0), binder variable
 ```
+
+Single-quote the whole argument so the shell does not split on the space inside the
+brackets.
 
 ❌ **Wrong**:
 ```bash
-contigmap.contigs=[A1-150 70-100]    # Missing /0 - target will move!
-contigmap.contigs="A1-150/0 70-100"  # Quotes break parsing
-contigmap.contigs=[A1-150/0, 70-100] # Comma breaks parsing
+contigmap.contigs=[A1-150 70-100]     # Missing /0 - target will move!
+contigmap.contigs=[A1-150/0 70-100]   # Unquoted: shell splits on the space
+contigmap.contigs=[A1-150/0, 70-100]  # Extra comma changes the contig string
 ```
 
 ### Hotspot Residues
 ✅ **Correct**:
 ```bash
-ppi.hotspot_res=[A45,A67,A89]        # Chain letter + residue number
+'ppi.hotspot_res=[A45,A67,A89]'      # Chain letter + residue number, whole arg quoted
 ```
 
 ❌ **Wrong**:
 ```bash
 ppi.hotspot_res=[45,67,89]           # Missing chain letter
-ppi.hotspot_res=[A45, A67, A89]      # Spaces break parsing
-ppi.hotspot_res="A45,A67,A89"        # Quotes break parsing
+'ppi.hotspot_res=[A45, A67, A89]'    # Spaces inside the list break parsing
 ```
 
 ### Complete Parameter Reference

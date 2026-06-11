@@ -112,7 +112,7 @@ pre-filter rather than a hard cutoff.
 
 ## Stability prediction (small domains)
 
-For small domains (roughly 60 to 100 residues, the minibinder range), absolute folding
+For small domains (roughly 60 to 80 residues, the minibinder range), absolute folding
 stability can be predicted directly. SaProtΔG (Cho et al., bioRxiv 2026,
 doi:10.64898/2026.05.19.726285) predicts absolute folding ΔG at about 0.8 kcal/mol RMSE
 and improves discrimination of stable versus unstable designed proteins. Use the SaProt
@@ -277,7 +277,7 @@ Low pLDDT across campaign
 │   └── Low scRMSD but low pLDDT: Disordered regions
 │       └── Fix: Check design length, simplify topology
 ├── Try more sequences per backbone
-│   └── modal run modal_ligandmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
+│   └── modal run modal_ligandmpnn.py --input-pdb bb.pdb --params-str "--number_of_batches 32 --temperature 0.1"
 ├── Use SolubleMPNN instead of ProteinMPNN
 │   └── Better for expression-optimized sequences
 └── Consider different design tool
@@ -306,8 +306,8 @@ Low ipTM across campaign
 ```
 Sequences don't specify intended structure
 ├── ProteinMPNN issue
-│   ├── Lower temperature: --sampling-temp 0.1
-│   ├── Increase sequences: --num-seq-per-target 32
+│   ├── Lower temperature: --sampling_temp "0.1"
+│   ├── Increase sequences: --num_seq_per_target 32
 │   └── Check fixed_positions aren't over-constraining
 ├── Backbone geometry issue
 │   ├── Backbones may be unusual/strained

@@ -26,6 +26,17 @@
 - RFdiffusion is documented as running from the official RosettaCommons repo, since it
   is not packaged in biomodals
 - Corrected the Mosaic `build_multisample_loss` usage and the ESMFold2 / ESM C API calls
+- Fact-check pass across all skills: corrected biomodals CLI flags (`--input-pdb`,
+  `--input-fasta`, `--input-faa`/`--out-dir`, LigandMPNN `--params-str`), BindCraft and
+  BoltzGen run commands, RFdiffusion install/weights/hydra quoting, SolubleMPNN
+  `--use_soluble_model`, Foldseek `--max-seqs` default and database sizes, ipSAE
+  attribution, SaProtΔG domain range, the inverted BLI koff red flag, and references to
+  non-existent `colabfold`/`colabdesign` skills
+- Binder-tool default is framed by cost and effort to a binder, since hit-rate is
+  target-dependent for every method
+
+### Added (follow-up)
+- Protenix-v2 noted for antibody-antigen complexes (`--model-name protenix-v2`)
 
 ## [2.0.0] - 2026-01-16
 

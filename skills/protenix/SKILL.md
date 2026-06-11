@@ -16,8 +16,15 @@ biomodals_script: modal_protenix.py
 # Protenix Structure Prediction
 
 [Protenix](https://github.com/bytedance/Protenix) is ByteDance's open PyTorch
-reproduction of AlphaFold3. It is an AF3-class complex predictor, useful next to
-`boltz` and `chai` for cross-checking designed complexes. Runnable through biomodals.
+reproduction of AlphaFold3 (Apache 2.0). It is an AF3-class complex predictor, useful
+next to `boltz` and `chai` for cross-checking designed complexes. Runnable through
+biomodals.
+
+**Use Protenix-v2 for antibody-antigen complexes.** The v2 model (464M params, April
+2026) adds 9 to 13 percentage points of antibody-antigen accuracy over v1 at the
+DockQ > 0.23 threshold and is more sample-efficient (v2 at 5 seeds exceeds v1 at 1000).
+Select it with `--model-name protenix-v2`. For general complexes, the v1 base model is
+fine.
 
 ## Prerequisites
 
@@ -47,6 +54,7 @@ uv run --with modal modal run modal_protenix.py \
 | `--input-faa` | one required | FASTA input (or `--input-json`) |
 | `--seeds` | `42` | Comma-separated seeds |
 | `--use-msa` / `--no-use-msa` | MSA on | Pass `--no-use-msa` for single-sequence |
+| `--model-name` | v1 base | Set `protenix-v2` for antibody-antigen complexes |
 | `--use-mini` | off | Switch to the smaller `protenix_mini` model |
 | `--out-dir` | `./out/protenix` | Output directory |
 
@@ -56,7 +64,8 @@ uv run --with modal modal run modal_protenix.py \
 |------|------|
 | Affinity head (small molecules) | boltz (Boltz-2) |
 | Fastest, ligand support | chai |
-| Open AF3 reproduction | protenix |
+| Open AF3 reproduction | protenix (v1 base) |
+| Antibody-antigen complexes | protenix-v2 |
 
 Ranking a shortlist across more than one predictor is more reliable than trusting a
 single model.

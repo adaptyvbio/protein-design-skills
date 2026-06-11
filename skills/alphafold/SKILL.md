@@ -32,11 +32,11 @@ biomodals_script: modal_alphafold.py
 
 > **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
-### Option 1: ColabFold (recommended for multimer)
+### Option 1: Modal (AlphaFold-Multimer)
 ```bash
 cd biomodals
 modal run modal_alphafold.py \
-  --input-faa sequences.fasta \
+  --input-fasta sequences.fasta \
   --out-dir output/
 ```
 
@@ -44,7 +44,7 @@ modal run modal_alphafold.py \
 
 ### Option 2: Local installation
 ```bash
-git clone https://github.com/deepmind/alphafold.git
+git clone https://github.com/google-deepmind/alphafold.git
 cd alphafold
 
 python run_alphafold.py \

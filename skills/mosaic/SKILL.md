@@ -124,8 +124,8 @@ ranking_loss = boltz2.build_multisample_loss(
 ```
 
 On the Adaptyv Nipah de novo target, this recipe produced 8 binders out of 9 tested
-designs (about 25 nM), the highest hit-rate of any method on that target in the public
-results. That is a small, expert-tuned sample on one hard target, not a guarantee
+designs at nanomolar affinity, the highest hit-rate of any method on that target in the
+public results. That is a small, expert-tuned sample on one hard target, not a guarantee
 across targets, so treat Mosaic as a high-ceiling option that rewards careful objective
 design rather than a turnkey default.
 

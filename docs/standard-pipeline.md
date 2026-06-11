@@ -56,9 +56,10 @@ io.save('target_chainA.pdb', ChainSelect())
 **Skill**: `boltzgen`
 
 ```bash
+# BoltzGen takes a YAML design spec (binding site set inside it); see the boltzgen skill
 uvx modal run modal_boltzgen.py \
-  --target target_chainA.pdb \
-  --hotspot-res "A42,A58,A62" \
+  --input-yaml binder.yaml \
+  --protocol protein-anything \
   --num-designs 50
 ```
 
@@ -83,9 +84,8 @@ python run_inference.py \
 **Step 2: Sequence Design** (`ligandmpnn`)
 ```bash
 uvx modal run modal_ligandmpnn.py \
-  --pdb-path output/output_0.pdb \
-  --num-seq-per-target 8 \
-  --sampling-temp 0.1
+  --input-pdb output/output_0.pdb \
+  --params-str "--number_of_batches 8 --temperature 0.1"
 ```
 
 **Expected**: 100 backbones × 8 sequences = 800 sequences
@@ -97,8 +97,8 @@ uvx modal run modal_ligandmpnn.py \
 ```bash
 # Validate with Chai
 uvx modal run modal_chai1.py \
-  --fasta-path all_designs.fasta \
-  --output-dir predictions/
+  --input-faa all_designs.fasta \
+  --out-dir predictions/
 ```
 
 **Expected**: Predictions with pLDDT, pTM, ipTM scores

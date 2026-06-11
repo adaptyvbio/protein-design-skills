@@ -32,16 +32,22 @@ against the same target. On the Adaptyv Nipah de novo target, the public results
 | BindCraft | 98 | 7 | 7% |
 | BoltzGen | 182 | 6 | 3% |
 
-Mosaic had the highest hit-rate, but on a small, expert-tuned sample, and the ranking
-shifts on other targets. Treat this as evidence that a well-designed gradient objective
-can win on hard targets, not as a fixed leaderboard. BoltzGen remains a strong, cheap,
-turnkey default; Mosaic is the high-ceiling option when you can invest tuning time.
+Mosaic had the highest hit-rate here, but on a small, expert-tuned sample. The ranking
+shifts on other targets, and that target-dependence is true of every method (BoltzGen,
+Boltz, BindCraft, Mosaic). You cannot know a priori which will win on a new target, so
+this is not a fixed leaderboard.
+
+Because of that, choose a starting point by **cost and effort to a binder**, not by
+assuming a method has the best hit-rate. BoltzGen is the suggested default purely
+because it is cheap, turnkey, and all-atom, so it gets you testable designs fastest.
+Mosaic is the high-ceiling option when you can invest time tuning the objective. On a
+hard or important target, running more than one method in parallel is reasonable.
 
 ```
 De novo binder design?
 │
-├─ Highest hit-rate, willing to tune → Mosaic (gradient, multi-model objective)
-├─ Cheap, turnkey, all-atom default → BoltzGen
+├─ Lowest cost/effort to testable designs → BoltzGen (default)
+├─ Hard/important target, can invest tuning → Mosaic (gradient, multi-model)
 ├─ Ligand / small-molecule binding → BoltzGen (all-atom)
 ├─ Diversity / exploration → RFdiffusion + ProteinMPNN
 ├─ End-to-end with built-in validation → BindCraft
@@ -52,8 +58,8 @@ De novo binder design?
 
 | Tool | Strengths | Weaknesses | Best for |
 |------|-----------|------------|----------|
-| Mosaic | Highest competition hit-rate, composable objective | Needs tuning, local JAX only | Hard targets, expert use |
-| BoltzGen | All-atom, single-step, cheap, turnkey | Lower hit-rate on hard targets | Budget default, ligand binding |
+| BoltzGen | All-atom, single-step, cheap, turnkey | One model in the loop | Lowest cost/effort default, ligand binding |
+| Mosaic | Composable multi-model objective, won hard head-to-heads | Needs tuning, local JAX only | Hard or important targets, expert use |
 | BindCraft | End-to-end, built-in AF2 validation | Less diverse | Production campaigns |
 | RFdiffusion | High diversity | Requires ProteinMPNN; not in biomodals | Exploration, diversity |
 | Germinal | Antibody and nanobody formats | Finicky | scFv / VHH design |
@@ -62,7 +68,7 @@ De novo binder design?
 
 - **Budget / quick exploration**: BoltzGen is cheap (about $8 for 50 designs) and needs
   no tuning. Good first pass and good for ligand binding.
-- **Best hit-rate on a hard target**: Mosaic, given time to design and tune the
+- **Highest ceiling on a hard target**: Mosaic, given time to design and tune the
   objective. It runs locally on a JAX GPU rather than through biomodals.
 - Whatever the generator, validate with `boltz` or `chai` and rank with `ipsae`.
 
@@ -139,9 +145,8 @@ python run_inference.py \
 
 # Step 2: Sequence design
 modal run modal_ligandmpnn.py \
-  --pdb-path backbone.pdb \
-  --num-seq-per-target 16 \
-  --sampling-temp 0.1
+  --input-pdb backbone.pdb \
+  --params-str "--number_of_batches 16 --temperature 0.1"
 ```
 
 ### 5. Validation
