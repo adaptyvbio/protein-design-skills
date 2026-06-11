@@ -158,7 +158,11 @@ Should I use BindCraft?
 | 100 designs | 4-8h | ~$30 | Standard |
 | 200 designs | 8-16h | ~$60 | Large campaign |
 
-**Expected pass rate**: 30-70% with ipTM > 0.5 (target-dependent).
+Adaptyv's own tests of these models showed BindCraft costing about $2.90 per accepted
+design, averaged across 7 targets.
+
+**Experimental success rate** (BindCraft paper): 10 to 100%, averaging 46.3% across 12
+targets; strongly target-dependent.
 
 ---
 

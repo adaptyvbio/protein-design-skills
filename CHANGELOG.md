@@ -37,6 +37,8 @@
 
 ### Added (follow-up)
 - Protenix-v2 noted for antibody-antigen complexes (`--model-name protenix-v2`)
+- Measured compute cost per accepted design (averaged across 7 internal benchmark
+  targets) added to binder-design and the relevant tool skills
 
 ## [2.0.0] - 2026-01-16
 

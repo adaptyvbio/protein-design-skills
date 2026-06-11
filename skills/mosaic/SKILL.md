@@ -148,6 +148,12 @@ Should I use Mosaic?
 └─ Want backbone-only diversity?                    → rfdiffusion + proteinmpnn
 ```
 
+## Cost
+
+Adaptyv's own tests of these models showed Mosaic costing about $0.55 per accepted
+design, averaged across 7 targets, among the cheapest per design of the methods tested.
+That is compute only; the setup and tuning effort is the real cost of using Mosaic.
+
 ## Troubleshooting
 
 | Issue | Cause | Fix |

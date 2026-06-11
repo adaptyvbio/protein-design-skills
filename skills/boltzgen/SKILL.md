@@ -251,6 +251,10 @@ Should I use BoltzGen?
 
 **Per-design**: ~30-60s for typical binder.
 
+Adaptyv's own tests of these models showed BoltzGen costing about $1.80 per accepted
+design, averaged across 7 targets (the generation estimates above do not include the
+extra sampling and refolding needed to reach an accepted design).
+
 ---
 
 ## Verify

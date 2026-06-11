@@ -76,6 +76,11 @@ Antibody-format binder?
 For VHH nanobodies, biomodals also has `modal_mber.py` (mBER) and `modal_iggm.py`
 (IgGM) as alternatives.
 
+## Cost
+
+Adaptyv's own tests of these models showed Germinal costing about $1.60 per accepted
+design, averaged across 7 targets.
+
 ## Troubleshooting
 
 | Issue | Cause | Fix |

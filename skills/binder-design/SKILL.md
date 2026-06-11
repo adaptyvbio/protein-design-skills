@@ -38,8 +38,8 @@ Boltz, BindCraft, Mosaic). You cannot know a priori which will win on a new targ
 this is not a fixed leaderboard.
 
 Because of that, choose a starting point by **cost and effort to a binder**, not by
-assuming a method has the best hit-rate. BoltzGen is the suggested default purely
-because it is cheap, turnkey, and all-atom, so it gets you testable designs fastest.
+assuming a method has the best hit-rate. BoltzGen is the suggested default because it is
+turnkey and all-atom, so it gets you testable designs fastest with the least setup.
 Mosaic is the high-ceiling option when you can invest time tuning the objective. On a
 hard or important target, running more than one method in parallel is reasonable.
 
@@ -58,18 +58,40 @@ De novo binder design?
 
 | Tool | Strengths | Weaknesses | Best for |
 |------|-----------|------------|----------|
-| BoltzGen | All-atom, single-step, cheap, turnkey | One model in the loop | Lowest cost/effort default, ligand binding |
+| BoltzGen | All-atom, single-step, turnkey | One model in the loop; mid-range cost per design | Lowest-effort default, ligand binding |
 | Mosaic | Composable multi-model objective, won hard head-to-heads | Needs tuning, local JAX only | Hard or important targets, expert use |
 | BindCraft | End-to-end, built-in AF2 validation | Less diverse | Production campaigns |
 | RFdiffusion | High diversity | Requires ProteinMPNN; not in biomodals | Exploration, diversity |
 | Germinal | Antibody and nanobody formats | Finicky | scFv / VHH design |
 
-## Compute vs hit-rate tradeoff
+## Compute cost per design
 
-- **Budget / quick exploration**: BoltzGen is cheap (about $8 for 50 designs) and needs
-  no tuning. Good first pass and good for ligand binding.
+Adaptyv's own tests of these models showed the following compute cost per accepted
+design, averaged across 7 targets (it varies several-fold by target):
+
+| Method | Cost per design |
+|--------|-----------------|
+| RSO | ~$0.15 |
+| RFdiffusion | ~$0.25 |
+| Mosaic | ~$0.55 |
+| ESMFold2 inversion | ~$0.85 |
+| mBER | ~$1.40 |
+| Germinal | ~$1.60 |
+| BoltzGen | ~$1.80 |
+| BindCraft | ~$2.90 |
+
+Per-design compute cost is not the same as cost to a binder, which also depends on the
+hit-rate on your target. The gradient methods (RSO, Mosaic) are cheap per design but
+need setup and tuning; BoltzGen and BindCraft cost more per design but are turnkey, so
+their advantage is low human effort rather than lowest compute cost.
+
+## Compute vs effort tradeoff
+
+- **Lowest human effort**: BoltzGen needs no tuning and runs through biomodals. Good
+  first pass and good for ligand binding.
 - **Highest ceiling on a hard target**: Mosaic, given time to design and tune the
-  objective. It runs locally on a JAX GPU rather than through biomodals.
+  objective. It runs locally on a JAX GPU rather than through biomodals, and is cheap
+  per design.
 - Whatever the generator, validate with `boltz` or `chai` and rank with `ipsae`.
 
 Other biomodals-backed options: `modal_rso.py` (Rejection Sampling Optimization, an
@@ -78,7 +100,7 @@ nanobodies.
 
 ## Example pipeline: BoltzGen → Chai → QC
 
-BoltzGen provides all-atom design with built-in side-chain packing. This is one cheap,
+BoltzGen provides all-atom design with built-in side-chain packing. This is one
 turnkey path; swap in Mosaic, RFdiffusion, or BindCraft depending on the target.
 
 ```

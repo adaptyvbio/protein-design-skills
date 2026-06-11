@@ -267,6 +267,10 @@ Should I use RFdiffusion?
 
 **Expected downstream yield**: ~10-15% of backbones pass full QC after sequence design + validation.
 
+Adaptyv's own tests of these models showed an RFdiffusion + sequence-design pipeline
+costing about $0.25 per accepted design, averaged across 7 targets, among the cheapest
+of the methods tested.
+
 ---
 
 ## Verify

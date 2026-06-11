@@ -146,6 +146,9 @@ uv run --with modal modal run modal_esmfold2_binder_design.py \
 - Rank candidates by ipTM, filter minibinders to pI below 6, then validate the top
   shortlist with `boltz` or `chai` and rank with `ipsae`.
 
+Adaptyv's own tests of these models showed ESMFold2-inversion binder design costing
+about $0.85 per accepted design, averaged across 7 targets.
+
 For a framework that composes ESMFold2 with other predictors in one objective, use the
 `mosaic` skill.
 
