@@ -49,11 +49,12 @@ io.save('target_chain_A.pdb', ChainSelect())
 
 ### Option A: RFdiffusion (Diverse Exploration)
 ```bash
-modal run modal_rfdiffusion.py \
-    --pdb target_prepared.pdb \
-    --contigs "A1-150/0 70-100" \
-    --hotspot "A45,A67,A89" \
-    --num-designs 500
+# RFdiffusion runs from the official repo, not biomodals
+python run_inference.py \
+    inference.input_pdb=target_prepared.pdb \
+    contigmap.contigs=[A1-150/0 70-100] \
+    ppi.hotspot_res=[A45,A67,A89] \
+    inference.num_designs=500
 ```
 
 **Output**: 500 backbone PDBs
@@ -76,7 +77,7 @@ modal run modal_bindcraft.py \
 ```bash
 # Batch process all backbones
 for backbone in backbones/*.pdb; do
-    modal run modal_proteinmpnn.py \
+    modal run modal_ligandmpnn.py \
         --pdb-path "$backbone" \
         --num-seq-per-target 8 \
         --sampling-temp 0.1
@@ -99,7 +100,7 @@ def make_complex_fasta(binder_seq, target_seq, output_path):
 
 ### Run validation
 ```bash
-modal run modal_colabfold.py \
+modal run modal_alphafold.py \
     --input-faa all_complexes.fasta \
     --out-dir predictions/
 ```

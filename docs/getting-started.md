@@ -53,7 +53,7 @@ git clone https://github.com/hgbrian/biomodals
 cd biomodals
 ```
 
-Verify: You should see files like `modal_boltzgen.py`, `modal_rfdiffusion.py`
+Verify: You should see files like `modal_boltzgen.py`, `modal_chai1.py`, `modal_esmfold2.py`
 
 ## Step 4: Test your setup
 
@@ -101,8 +101,8 @@ Expected output:
 # BoltzGen (all-atom, single-step)
 uvx modal run modal_boltzgen.py --target target.pdb --num-designs 50
 
-# RFdiffusion (backbone generation)
-uvx modal run modal_rfdiffusion.py --input-pdb target.pdb --contigs "A1-150/0 70-100" --num-designs 100
+# RFdiffusion (backbone generation; official repo, not biomodals)
+python run_inference.py inference.input_pdb=target.pdb contigmap.contigs=[A1-150/0 70-100] inference.num_designs=100
 
 # BindCraft (end-to-end)
 uvx modal run modal_bindcraft.py --target-pdb target.pdb --num-designs 50
@@ -127,9 +127,9 @@ uvx modal run modal_boltz.py --fasta-path designs.fasta --output-dir predictions
 
 Set GPU with environment variable:
 ```bash
-GPU=A10G uvx modal run modal_rfdiffusion.py ...
 GPU=L40S uvx modal run modal_boltzgen.py ...
 GPU=A100 uvx modal run modal_chai1.py ...
+MODAL_GPU=A100 uvx modal run modal_esmfold2.py ...
 ```
 
 | GPU | VRAM | Best For |
@@ -171,6 +171,6 @@ First run downloads model weights (~5-10 min). Subsequent runs are faster.
 
 ## See also
 
-- [Skills](skills.md) - All 22 skills
+- [Skills](skills.md) - All 24 skills
 - [Standard pipeline](standard-pipeline.md) - Full workflow details
 - [Compute setup](compute-setup.md) - Modal vs local setup

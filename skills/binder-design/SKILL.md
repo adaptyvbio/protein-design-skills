@@ -16,46 +16,64 @@ tags: [guidance, tool-selection, workflow]
 
 # Binder Design Tool Selection
 
-## Decision tree
+## Which tool wins
 
-No single tool is best for every target. Pick by target type, what you want to
-control, and available compute.
+No single tool is best for every target. Hit-rate is strongly target-dependent, so
+choose by target type, what you want to control, and available compute.
+
+The clearest signal comes from head-to-head competitions where many methods design
+against the same target. On the Adaptyv Nipah de novo target, the public results show:
+
+| Method | Tested | Binders | Hit-rate |
+|--------|--------|---------|----------|
+| Mosaic (gradient, multi-model) | 9 | 8 | 89% |
+| ProteinMPNN hybrid | 28 | 7 | 25% |
+| RFdiffusion | 60 | 13 | 22% |
+| BindCraft | 98 | 7 | 7% |
+| BoltzGen | 182 | 6 | 3% |
+
+Mosaic had the highest hit-rate, but on a small, expert-tuned sample, and the ranking
+shifts on other targets. Treat this as evidence that a well-designed gradient objective
+can win on hard targets, not as a fixed leaderboard. BoltzGen remains a strong, cheap,
+turnkey default; Mosaic is the high-ceiling option when you can invest tuning time.
 
 ```
 De novo binder design?
 │
-├─ All-atom design or ligand/small-molecule binding → BoltzGen
-│   All-atom output (no separate ProteinMPNN step)
-│   Single-step design (backbone + sequence + side chains)
-│   Higher GPU requirement
-│
+├─ Highest hit-rate, willing to tune → Mosaic (gradient, multi-model objective)
+├─ Cheap, turnkey, all-atom default → BoltzGen
+├─ Ligand / small-molecule binding → BoltzGen (all-atom)
 ├─ Diversity / exploration → RFdiffusion + ProteinMPNN
-│   Maximum backbone diversity, two-step
-│
 ├─ End-to-end with built-in validation → BindCraft
-│   AF2 validation in the loop
-│
-├─ Custom multi-model objective → Mosaic
-│   Gradient optimization, compose several predictors
-│
-└─ Antibody / nanobody (VHH)
-    External tools, not yet packaged as skills:
-    Germinal and RFantibody
+└─ Antibody / nanobody (VHH) → germinal skill (also mber, iggm in biomodals)
 ```
 
 ## Tool comparison
 
-| Tool | Strengths | Weaknesses | Best For |
+| Tool | Strengths | Weaknesses | Best for |
 |------|-----------|------------|----------|
-| BoltzGen | All-atom, single-step, ligand-aware | Higher GPU requirement | All-atom and ligand binding |
+| Mosaic | Highest competition hit-rate, composable objective | Needs tuning, local JAX only | Hard targets, expert use |
+| BoltzGen | All-atom, single-step, cheap, turnkey | Lower hit-rate on hard targets | Budget default, ligand binding |
 | BindCraft | End-to-end, built-in AF2 validation | Less diverse | Production campaigns |
-| RFdiffusion | High diversity, fast | Requires ProteinMPNN | Exploration, diversity |
-| Mosaic | Compose any predictors, custom loss | Needs tuning, no default filters | Custom objectives |
+| RFdiffusion | High diversity | Requires ProteinMPNN; not in biomodals | Exploration, diversity |
+| Germinal | Antibody and nanobody formats | Finicky | scFv / VHH design |
+
+## Compute vs hit-rate tradeoff
+
+- **Budget / quick exploration**: BoltzGen is cheap (about $8 for 50 designs) and needs
+  no tuning. Good first pass and good for ligand binding.
+- **Best hit-rate on a hard target**: Mosaic, given time to design and tune the
+  objective. It runs locally on a JAX GPU rather than through biomodals.
+- Whatever the generator, validate with `boltz` or `chai` and rank with `ipsae`.
+
+Other biomodals-backed options: `modal_rso.py` (Rejection Sampling Optimization, an
+AlphaFold-based gradient method) for minibinders, and `modal_mber.py` for VHH
+nanobodies.
 
 ## Example pipeline: BoltzGen → Chai → QC
 
-BoltzGen provides all-atom design with built-in side-chain packing. This is one
-solid path; swap in RFdiffusion, BindCraft, or Mosaic depending on the target.
+BoltzGen provides all-atom design with built-in side-chain packing. This is one cheap,
+turnkey path; swap in Mosaic, RFdiffusion, or BindCraft depending on the target.
 
 ```
 Target → BoltzGen → Validate → Filter
@@ -112,12 +130,12 @@ modal run modal_boltzgen.py \
 ### 4. Alternative: RFdiffusion Pipeline
 For maximum diversity or when backbone-only is preferred:
 ```bash
-# Step 1: Backbone generation
-modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 500
+# Step 1: Backbone generation (RFdiffusion, run from the official repo)
+python run_inference.py \
+  inference.input_pdb=target.pdb \
+  contigmap.contigs=[A1-150/0 70-100] \
+  ppi.hotspot_res=[A45,A67,A89] \
+  inference.num_designs=500
 
 # Step 2: Sequence design
 modal run modal_ligandmpnn.py \

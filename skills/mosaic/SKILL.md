@@ -45,11 +45,18 @@ JIT compilation makes the first call to any loss slow; later calls are fast.
 
 ## Install
 
+Mosaic runs locally on a JAX GPU or TPU build. It has no CLI and no Modal
+integration; you drive it through the marimo notebooks or the Python API.
+
 ```bash
 git clone https://github.com/escalante-bio/mosaic && cd mosaic
-uv sync --group jax-cuda
+uv sync --group jax-cuda      # or --group jax-tpu / --group jax-cpu
+uv add jax[cuda12]            # may be needed for a GPU build
 uv run marimo edit examples/example_notebook.py
 ```
+
+Ready-made examples include `esmfold_minibinder.py`, `esmfold_vhh.py`,
+`boltzgen_pipeline.py`, and `batched_protenix.py`.
 
 ## Core idea
 
@@ -99,17 +106,28 @@ A reasonable `simplex_APGM` step size is about `0.1 * sqrt(binder_length)`.
 
 The published [Nipah competition recipe](https://blog.escalante.bio/180-lines-of-code-to-win-the-in-silico-portion-of-the-adaptyv-nipah-binding-competition/)
 optimizes a design loss on Boltz-2, then ranks candidates with a separate
-multi-sample loss built from ipTM and ipSAE.
+multi-sample loss built from ipTM and ipSAE. The multi-sample loss is a method on the
+Boltz2 model, not a free function:
 
 ```python
-ranking_loss = folder.build_multisample_loss(
+from mosaic.models.boltz2 import Boltz2
+
+boltz2 = Boltz2()
+ranking_loss = boltz2.build_multisample_loss(
     loss=1.00 * sp.IPTMLoss()
     + 0.5 * sp.TargetBinderIPSAE()
     + 0.5 * sp.BinderTargetIPSAE(),
+    features=design_features,
     num_samples=6,
     recycling_steps=3,
 )
 ```
+
+On the Adaptyv Nipah de novo target, this recipe produced 8 binders out of 9 tested
+designs (about 25 nM), the highest hit-rate of any method on that target in the public
+results. That is a small, expert-tuned sample on one hard target, not a guarantee
+across targets, so treat Mosaic as a high-ceiling option that rewards careful objective
+design rather than a turnkey default.
 
 Two practices from that work are worth carrying over:
 

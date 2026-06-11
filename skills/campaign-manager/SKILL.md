@@ -52,17 +52,18 @@ curl -o target.pdb "https://files.rcsb.org/download/{PDB_ID}.pdb"
 # Trim to binding region if needed
 
 # Step 2: Generate backbones (2-3h, ~$15)
-modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 500
+# RFdiffusion runs from the official repo, not biomodals
+python run_inference.py \
+  inference.input_pdb=target.pdb \
+  contigmap.contigs=[A1-150/0 70-100] \
+  ppi.hotspot_res=[A45,A67,A89] \
+  inference.num_designs=500
 
 # Checkpoint: ls output/*.pdb | wc -l  # Should be 500
 
 # Step 3: Design sequences (1-2h, ~$10)
 for f in output/*.pdb; do
-  modal run modal_proteinmpnn.py \
+  modal run modal_ligandmpnn.py \
     --pdb-path "$f" \
     --num-seq-per-target 8 \
     --sampling-temp 0.1
@@ -71,11 +72,11 @@ done
 # Checkpoint: grep -c "^>" output/seqs/*.fa  # Should be ~4000
 
 # Step 4: Quick ESM2 filter (30 min, ~$5, optional)
-modal run modal_esm.py --fasta output/all_seqs.fa --mode pll
+modal run modal_esm2_predict_masked.py --input-faa output/all_seqs.fa
 # Filter sequences with PLL < 0.0
 
 # Step 5: Structure validation (3-4h, ~$35)
-modal run modal_colabfold.py \
+modal run modal_alphafold.py \
   --input-faa output/filtered_seqs.fa \
   --out-dir predictions/
 
@@ -213,26 +214,26 @@ def assess_campaign(csv_path):
 ### High-throughput (maximize diversity)
 
 ```bash
-# More backbones, fewer sequences each
-modal run modal_rfdiffusion.py --num-designs 2000
-modal run modal_proteinmpnn.py --num-seq-per-target 4 --sampling-temp 0.2
+# More backbones, fewer sequences each (RFdiffusion from the official repo)
+python run_inference.py inference.num_designs=2000
+modal run modal_ligandmpnn.py --num-seq-per-target 4 --sampling-temp 0.2
 ```
 
 ### High-quality (maximize per-design quality)
 
 ```bash
 # Fewer backbones, more sequences each, lower temperature
-modal run modal_rfdiffusion.py --num-designs 200
-modal run modal_proteinmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
+python run_inference.py inference.num_designs=200
+modal run modal_ligandmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
 ```
 
 ### Quick exploration (fast iteration)
 
 ```bash
-# Small batch, ESMFold instead of ColabFold
-modal run modal_rfdiffusion.py --num-designs 50
-modal run modal_proteinmpnn.py --num-seq-per-target 8
-modal run modal_esmfold.py --fasta all_seqs.fa  # Faster than ColabFold
+# Small batch, ESMFold2 for fast single-sequence folding
+# RFdiffusion runs from the official repo (not biomodals); see the rfdiffusion skill
+modal run modal_ligandmpnn.py --num-seq-per-target 8
+modal run modal_esmfold2.py --input-faa all_seqs.fa
 ```
 
 ---

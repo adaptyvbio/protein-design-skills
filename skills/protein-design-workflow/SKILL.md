@@ -60,11 +60,12 @@ curl -o target.pdb "https://files.rcsb.org/download/XXXX.pdb"
 
 ### Option A: RFdiffusion (diverse exploration)
 ```bash
-modal run modal_rfdiffusion.py \
-  --pdb target_prepared.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 500
+# RFdiffusion runs from the official repo, not biomodals
+python run_inference.py \
+  inference.input_pdb=target_prepared.pdb \
+  contigmap.contigs=[A1-150/0 70-100] \
+  ppi.hotspot_res=[A45,A67,A89] \
+  inference.num_designs=500
 ```
 
 ### Option B: BindCraft (end-to-end)
@@ -82,7 +83,7 @@ modal run modal_bindcraft.py \
 ### For RFdiffusion backbones
 ```bash
 for backbone in backbones/*.pdb; do
-  modal run modal_proteinmpnn.py \
+  modal run modal_ligandmpnn.py \
     --pdb-path "$backbone" \
     --num-seq-per-target 8 \
     --sampling-temp 0.1
@@ -98,7 +99,7 @@ done
 # Prepare FASTA with binder + target
 # binder:target format for multimer
 
-modal run modal_colabfold.py \
+modal run modal_alphafold.py \
   --input-faa all_sequences.fasta \
   --out-dir predictions/
 ```

@@ -20,9 +20,9 @@
     "modal": "optional (recommended for GPU execution)",
     "gpu": "optional (required for local execution)"
   },
-  "skills_count": 22,
+  "skills_count": 24,
   "skill_categories": {
-    "design-tools": 11,
+    "design-tools": 13,
     "evaluation": 2,
     "utilities": 4,
     "experimental": 2,

@@ -9,18 +9,20 @@
   "plugins": [
     {
       "name": "adaptyv",
-      "description": "All 22 protein design skills",
+      "description": "All 24 protein design skills",
       "source": "./",
       "skills": [
         "./skills/boltzgen",
         "./skills/bindcraft",
         "./skills/rfdiffusion",
         "./skills/mosaic",
+        "./skills/germinal",
         "./skills/proteinmpnn",
         "./skills/ligandmpnn",
         "./skills/solublempnn",
         "./skills/chai",
         "./skills/boltz",
+        "./skills/protenix",
         "./skills/alphafold",
         "./skills/esm",
         "./skills/protein-qc",
@@ -38,18 +40,20 @@
     },
     {
       "name": "design-tools",
-      "description": "Core protein design methods (BoltzGen, BindCraft, RFdiffusion, Mosaic, etc.)",
+      "description": "Core protein design methods (BoltzGen, BindCraft, RFdiffusion, Mosaic, Germinal, etc.)",
       "source": "./",
       "skills": [
         "./skills/boltzgen",
         "./skills/bindcraft",
         "./skills/rfdiffusion",
         "./skills/mosaic",
+        "./skills/germinal",
         "./skills/proteinmpnn",
         "./skills/ligandmpnn",
         "./skills/solublempnn",
         "./skills/chai",
         "./skills/boltz",
+        "./skills/protenix",
         "./skills/alphafold",
         "./skills/esm"
       ]
@@ -116,6 +120,18 @@
       "description": "Multi-objective, gradient-based binder design using Mosaic",
       "source": "./",
       "skills": ["./skills/mosaic"]
+    },
+    {
+      "name": "germinal",
+      "description": "De novo antibody and nanobody (VHH) design using Germinal",
+      "source": "./",
+      "skills": ["./skills/germinal"]
+    },
+    {
+      "name": "protenix",
+      "description": "Structure prediction using Protenix, an open AlphaFold3 reproduction",
+      "source": "./",
+      "skills": ["./skills/protenix"]
     },
     {
       "name": "proteinmpnn",

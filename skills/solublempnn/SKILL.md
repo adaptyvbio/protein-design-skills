@@ -35,7 +35,7 @@ biomodals_script: modal_ligandmpnn.py
 SolubleMPNN uses the ProteinMPNN Modal wrapper with soluble model:
 ```bash
 cd biomodals
-modal run modal_proteinmpnn.py \
+modal run modal_ligandmpnn.py \
   --pdb-path backbone.pdb \
   --num-seq-per-target 16 \
   --sampling-temp 0.1 \

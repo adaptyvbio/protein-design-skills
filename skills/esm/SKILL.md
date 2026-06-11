@@ -75,11 +75,16 @@ logits = out.logits                      # for PLL / mutation scoring
 embeddings = out.hidden_states[-1]       # per-residue representations
 ```
 
+Install the package with `pip install esm@git+https://github.com/Biohub/esm.git@main`.
+
 ### Hosted API
 ```python
-from esm.sdk import client
+from esm.sdk import esmc_client
+from esm.sdk.api import ESMProtein, LogitsConfig
 
-model = client("esmc-600m-2024-12", url="https://biohub.ai")
+model = esmc_client(model="esmc-600m-2024-12", url="https://biohub.ai", token="<API token>")
+tensor = model.encode(ESMProtein(sequence="MKTAYIAKQRQISFVK..."))
+out = model.logits(tensor, LogitsConfig(sequence=True, return_embeddings=True))
 ```
 
 ESMC-6B has open weights; `esmc-600m` is the smaller API model. For mutation
@@ -94,40 +99,55 @@ an optional MSA, and has a single-sequence fast mode for high-throughput screeni
 It is validated for protein-protein interaction design and leads DockQ pass-rate on
 Foldbench protein-protein and antibody-antigen complexes.
 
-### Modal
+### Modal (biomodals)
 ```bash
-# https://modal.com/docs/examples/esmfold2
-modal run esmfold2.py --sequence "MKTAYIAKQRQISFVK..."
+printf '>protein|A\nMKTAYIAKQRQISFVK...\n' > target.faa
+uv run --with modal modal run modal_esmfold2.py --input-faa target.faa
 ```
 
-### Python (Hugging Face)
+The FASTA header tags `protein|`, `dna|`, `rna|`, and `ligand|` (SMILES) let you fold
+complexes. GPU defaults to A100-40GB (set with `MODAL_GPU`).
+
+### Python (local weights)
 ```python
-from esm.models.esmfold2 import ESMFold2
+from transformers.models.esmfold2.modeling_esmfold2 import ESMFold2Model
+from esm.models.esmfold2 import ProteinInput, StructurePredictionInput, ESMFold2InputBuilder
 
-model = ESMFold2.from_pretrained("biohub/ESMFold2").eval().cuda()
-out = model.fold(sequences=["BINDER_SEQ", "TARGET_SEQ"])   # outputs CIF + pLDDT/pTM/ipTM
+model = ESMFold2Model.from_pretrained("biohub/ESMFold2").cuda().eval()
+spi = StructurePredictionInput(sequences=[ProteinInput(id="A", sequence="BINDER_SEQ")])
+result = ESMFold2InputBuilder().fold(model, spi, num_loops=20, num_sampling_steps=100)
+# result.plddt, result.ptm, result.iptm, result.complex.to_mmcif()
 ```
 
-Use the `esmfold2-fast-2026-05` variant in single-sequence mode for an order of
-magnitude speedup when screening many designs. ESMFold2 is one option for complex
-validation alongside `boltz` and `chai`; ranking a shortlist across more than one
-predictor is more reliable than trusting a single model.
+For single-sequence high-throughput folding, the fast variant is the SDK model string
+`esmfold2-fast-2026-05` (HF repo `biohub/ESMFold2-Fast`). ESMFold2 is one option for
+complex validation alongside `boltz` and `chai`; ranking a shortlist across more than
+one predictor is more reliable than trusting a single model.
 
 ## Binder design by inverting ESMFold2
 
 The [binder_design cookbook](https://github.com/Biohub/esm/blob/main/cookbook/tutorials/binder_design.ipynb)
-runs gradient optimization through ESMFold2 (a BindCraft-style loop), with an ESMC
-language-model term for sequence plausibility. The published protocol is validated
-in the lab to nanomolar affinity across five targets and supports both minibinders
-and antibody-derived scFvs with framework scaffolds.
+runs gradient optimization through ESMFold2 (a BindCraft-style loop) with an ESMC
+language-model term for sequence plausibility. The published protocol is validated in
+the lab to nanomolar affinity across five targets and supports both minibinders and
+antibody-derived scFvs with framework scaffolds.
 
-- Prompt positions to design with `#`; fix the rest as amino acids.
-- Optimize a soft sequence with Adam (about 150 steps, temperature anneal).
+biomodals wraps this as `modal_esmfold2_binder_design.py`:
+
+```bash
+uv run --with modal modal run modal_esmfold2_binder_design.py \
+  --target-name pd-l1 --binder-name minibinder
+```
+
+- Targets: presets `cd45, ctla4, egfr, pd-l1, pdgfr`, or pass `--target-sequence`.
+- Binders: presets `minibinder` and antibody frameworks (for example
+  `trastuzumab_framework_vhvl`), or pass `--binder-sequence` with `#` for designable
+  positions. Use `--is-antibody` for scFv designs.
 - Rank candidates by ipTM, filter minibinders to pI below 6, then validate the top
   shortlist with `boltz` or `chai` and rank with `ipsae`.
 
-For a more general framework that composes ESMFold2 with other predictors in one
-objective, use the `mosaic` skill.
+For a framework that composes ESMFold2 with other predictors in one objective, use the
+`mosaic` skill.
 
 ## ESM2 (legacy)
 

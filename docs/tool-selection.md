@@ -8,9 +8,12 @@ Master decision tree for choosing the right protein design tool.
 What are you designing?
 │
 ├─ Miniprotein binder (60-100 AA)
-│  ├─ Need diversity/exploration → rfdiffusion
-│  ├─ Need high success rate → bindcraft
-│  └─ Need all-atom precision → boltzgen
+│  ├─ Highest hit-rate, willing to tune → mosaic
+│  ├─ Cheap, turnkey, all-atom default → boltzgen
+│  ├─ Diversity/exploration → rfdiffusion
+│  └─ End-to-end with validation → bindcraft
+│
+├─ Antibody / nanobody → germinal
 │
 ├─ Sequence design (have backbone)
 │  ├─ Standard design → proteinmpnn
@@ -18,9 +21,11 @@ What are you designing?
 │  └─ Need solubility → solublempnn
 │
 └─ Structure prediction (validation)
-   ├─ Need open weights → boltz
+   ├─ Need open weights → boltz, chai, or protenix
    └─ Need highest accuracy → alphafold
 ```
+
+Hit-rate is target-dependent; see the `binder-design` skill for head-to-head results.
 
 ## Tool comparison
 
@@ -28,9 +33,11 @@ What are you designing?
 
 | Tool | Method | Strengths | Weaknesses | Best For |
 |------|--------|-----------|------------|----------|
-| rfdiffusion | Diffusion | High diversity, fast | Needs ProteinMPNN | Exploration |
-| bindcraft | End-to-end | High success rate | Less diverse | Production |
-| boltzgen | All-atom diffusion | Side-chain aware | Slower | Precision |
+| mosaic | Gradient, multi-model | Highest competition hit-rate | Needs tuning, local JAX | Hard targets |
+| boltzgen | All-atom diffusion | Cheap, turnkey, side-chain aware | Lower hit-rate on hard targets | Budget default |
+| rfdiffusion | Diffusion | High diversity | Needs ProteinMPNN; not in biomodals | Exploration |
+| bindcraft | End-to-end | Built-in AF2 validation | Less diverse | Production |
+| germinal | Hallucination + AbMPNN | Antibody / nanobody formats | Finicky | scFv / VHH |
 
 ### Sequence tools
 
@@ -45,7 +52,8 @@ What are you designing?
 | Tool | MSA | Speed | Best For |
 |------|-----|-------|----------|
 | chai | No | ~20-40s | Speed + ligands |
-| boltz | No | ~15-30s | Open weights |
+| boltz | No | ~15-30s | Open weights, Boltz-2 affinity |
+| protenix | Optional | ~60s+ | Open AF3 reproduction |
 | alphafold | Yes | ~60s+ | High accuracy |
 
 ## Recommended combinations

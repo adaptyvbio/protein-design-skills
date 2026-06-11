@@ -87,6 +87,9 @@ de novo failure modes:
 
 Both are in the Cao 2022, AlphaProteo, and BindCraft filter sets.
 
+For structure-quality ranking, biomodals also provides `modal_af2rank.py` (AF2Rank),
+which scores how well a design re-predicts from its own structure as a template.
+
 ## Binder ranking (benchmark-backed)
 
 A meta-analysis of 3,766 experimentally tested binders across 15 targets (Overath et
@@ -274,7 +277,7 @@ Low pLDDT across campaign
 │   └── Low scRMSD but low pLDDT: Disordered regions
 │       └── Fix: Check design length, simplify topology
 ├── Try more sequences per backbone
-│   └── modal run modal_proteinmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
+│   └── modal run modal_ligandmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
 ├── Use SolubleMPNN instead of ProteinMPNN
 │   └── Better for expression-optimized sequences
 └── Consider different design tool

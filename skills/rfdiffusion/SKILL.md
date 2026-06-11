@@ -17,7 +17,6 @@ category: design-tools
 tags: [structure-design, diffusion, backbone, binder]
 proteinbase_slug: rfdiffusion
 proteinbase_url: https://proteinbase.com/design-methods/rfdiffusion
-biomodals_script: modal_rfdiffusion.py
 ---
 
 # RFdiffusion Backbone Generation
@@ -33,45 +32,27 @@ biomodals_script: modal_rfdiffusion.py
 
 ## How to run
 
-> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
+RFdiffusion is not in biomodals, so run it from the official RosettaCommons repo or
+its Docker image, not through Modal.
 
-### Option 1: Modal (recommended)
+### Local installation (official repo)
 ```bash
-# Clone biomodals
-git clone https://github.com/hgbrian/biomodals && cd biomodals
-
-# Basic binder design
-modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 100
-
-# With custom GPU/timeout
-GPU=A100 TIMEOUT=60 modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --num-designs 100
-```
-
-**GPU**: A10G (24GB) | **Timeout**: 30min default
-
-### Option 2: Local installation
-```bash
-# Clone and install
 git clone https://github.com/RosettaCommons/RFdiffusion.git
 cd RFdiffusion && pip install -e .
 
 # Download weights
 wget http://files.ipd.uw.edu/pub/RFdiffusion/models/Complex_base_ckpt.pt
 
-# Run inference
+# Binder design run
 python run_inference.py \
   inference.input_pdb=target.pdb \
   contigmap.contigs=[A1-150/0 70-100] \
   ppi.hotspot_res=[A45,A67,A89] \
   inference.num_designs=100
 ```
+
+A RosettaCommons-maintained Docker image is also available from the repo README.
+After backbone generation, design sequences with `proteinmpnn`.
 
 ## Config Schema (Hydra)
 

@@ -35,7 +35,7 @@ biomodals_script: modal_alphafold.py
 ### Option 1: ColabFold (recommended for multimer)
 ```bash
 cd biomodals
-modal run modal_colabfold.py \
+modal run modal_alphafold.py \
   --input-faa sequences.fasta \
   --out-dir output/
 ```
@@ -54,10 +54,10 @@ python run_alphafold.py \
   --max_template_date=2026-01-01
 ```
 
-### Option 3: ESMFold (fast single-chain)
+### Option 3: ESMFold2 (fast single-sequence)
 ```bash
-modal run modal_esmfold.py \
-  --sequence "MKTAYIAKQRQISFVK..."
+printf '>protein|A\nMKTAYIAKQRQISFVK...\n' > seq.faa
+uv run --with modal modal run modal_esmfold2.py --input-faa seq.faa
 ```
 
 ## Key parameters

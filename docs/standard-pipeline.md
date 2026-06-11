@@ -72,11 +72,12 @@ For maximum diversity or backbone-only control:
 
 **Step 1: Backbone Generation** (`rfdiffusion`)
 ```bash
-uvx modal run modal_rfdiffusion.py \
-  --input-pdb target_chainA.pdb \
-  --contigs "A1-150/0 70-90" \
-  --hotspot-res "A42,A58,A62" \
-  --num-designs 100
+# RFdiffusion runs from the official repo, not biomodals
+python run_inference.py \
+  inference.input_pdb=target_chainA.pdb \
+  contigmap.contigs=[A1-150/0 70-90] \
+  ppi.hotspot_res=[A42,A58,A62] \
+  inference.num_designs=100
 ```
 
 **Step 2: Sequence Design** (`ligandmpnn`)
@@ -169,6 +170,6 @@ After filtering:
 
 ## See also
 
-- [Skills](skills.md) - All 22 skills
+- [Skills](skills.md) - All 24 skills
 - [Getting started](getting-started.md) - Setup guide
 - [Compute setup](compute-setup.md) - Modal vs local setup

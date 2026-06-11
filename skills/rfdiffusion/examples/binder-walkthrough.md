@@ -24,14 +24,7 @@ For 1ALU chain A, good hotspots: **A42, A58, A62** (receptor binding interface)
 ## Step 3: Generate backbones
 
 ```bash
-# Using Modal
-modal run modal_rfdiffusion.py \
-  --pdb target_chainA.pdb \
-  --contigs "A1-185/0 70-90" \
-  --hotspot "A42,A58,A62" \
-  --num-designs 100
-
-# Or locally
+# RFdiffusion runs from the official repo (not biomodals)
 python run_inference.py \
   inference.input_pdb=target_chainA.pdb \
   contigmap.contigs=[A1-185/0 70-90] \
