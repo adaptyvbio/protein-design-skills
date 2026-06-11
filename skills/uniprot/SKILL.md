@@ -188,4 +188,4 @@ def get_sequence_variants(accession):
 
 ---
 
-**Next**: Use sequence with `esm` for embeddings or `colabfold` for structure.
+**Next**: Use sequence with `esm` for embeddings or `chai` / `boltz` for structure.

@@ -17,7 +17,6 @@ category: design-tools
 tags: [structure-design, diffusion, backbone, binder]
 proteinbase_slug: rfdiffusion
 proteinbase_url: https://proteinbase.com/design-methods/rfdiffusion
-biomodals_script: modal_rfdiffusion.py
 ---
 
 # RFdiffusion Backbone Generation
@@ -33,45 +32,34 @@ biomodals_script: modal_rfdiffusion.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+RFdiffusion is not in biomodals, so run it from the official RosettaCommons repo or
+its Docker image, not through Modal.
 
-### Option 1: Modal (recommended)
+### Local installation (official repo)
 ```bash
-# Clone biomodals
-git clone https://github.com/hgbrian/biomodals && cd biomodals
-
-# Basic binder design
-modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 100
-
-# With custom GPU/timeout
-GPU=A100 TIMEOUT=60 modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --num-designs 100
-```
-
-**GPU**: A10G (24GB) | **Timeout**: 30min default
-
-### Option 2: Local installation
-```bash
-# Clone and install
 git clone https://github.com/RosettaCommons/RFdiffusion.git
-cd RFdiffusion && pip install -e .
+cd RFdiffusion
 
-# Download weights
-wget http://files.ipd.uw.edu/pub/RFdiffusion/models/Complex_base_ckpt.pt
+# Conda env including the required NVIDIA SE(3)-Transformer
+conda env create -f env/SE3nv.yml
+conda activate SE3nv
+cd env/SE3Transformer && pip install . && cd ../..
+pip install -e .
 
-# Run inference
-python run_inference.py \
+# Download weights (per-file hashed paths; see the repo README for the full list)
+mkdir -p models
+wget -P models http://files.ipd.uw.edu/pub/RFdiffusion/e29311f6f1bf1af907f9ef9f44b8328b/Complex_base_ckpt.pt
+
+# Binder design run; single-quote the hydra args so the shell does not split [] or ,
+./scripts/run_inference.py \
   inference.input_pdb=target.pdb \
-  contigmap.contigs=[A1-150/0 70-100] \
-  ppi.hotspot_res=[A45,A67,A89] \
+  'contigmap.contigs=[A1-150/0 70-100]' \
+  'ppi.hotspot_res=[A45,A67,A89]' \
   inference.num_designs=100
 ```
+
+A RosettaCommons-maintained Docker image is also available from the repo README.
+After backbone generation, design sequences with `proteinmpnn`.
 
 ## Config Schema (Hydra)
 
@@ -104,27 +92,29 @@ ppi.hotspot_res=[A45,A67,A89]
 ### Contig Syntax
 ✅ **Correct**:
 ```bash
-contigmap.contigs=[A1-150/0 70-100]  # Target fixed (/0), binder variable
+'contigmap.contigs=[A1-150/0 70-100]'  # Target fixed (/0), binder variable
 ```
+
+Single-quote the whole argument so the shell does not split on the space inside the
+brackets.
 
 ❌ **Wrong**:
 ```bash
-contigmap.contigs=[A1-150 70-100]    # Missing /0 - target will move!
-contigmap.contigs="A1-150/0 70-100"  # Quotes break parsing
-contigmap.contigs=[A1-150/0, 70-100] # Comma breaks parsing
+contigmap.contigs=[A1-150 70-100]     # Missing /0 - target will move!
+contigmap.contigs=[A1-150/0 70-100]   # Unquoted: shell splits on the space
+contigmap.contigs=[A1-150/0, 70-100]  # Extra comma changes the contig string
 ```
 
 ### Hotspot Residues
 ✅ **Correct**:
 ```bash
-ppi.hotspot_res=[A45,A67,A89]        # Chain letter + residue number
+'ppi.hotspot_res=[A45,A67,A89]'      # Chain letter + residue number, whole arg quoted
 ```
 
 ❌ **Wrong**:
 ```bash
 ppi.hotspot_res=[45,67,89]           # Missing chain letter
-ppi.hotspot_res=[A45, A67, A89]      # Spaces break parsing
-ppi.hotspot_res="A45,A67,A89"        # Quotes break parsing
+'ppi.hotspot_res=[A45, A67, A89]'    # Spaces inside the list break parsing
 ```
 
 ### Complete Parameter Reference
@@ -276,6 +266,10 @@ Should I use RFdiffusion?
 | 1000 backbones | 3-4h | ~$25 | Large campaign |
 
 **Expected downstream yield**: ~10-15% of backbones pass full QC after sequence design + validation.
+
+Adaptyv's own tests of these models showed an RFdiffusion + sequence-design pipeline
+costing about $0.25 per accepted design, averaged across 7 targets, among the cheapest
+of the methods tested.
 
 ---
 

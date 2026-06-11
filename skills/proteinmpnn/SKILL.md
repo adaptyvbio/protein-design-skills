@@ -30,7 +30,7 @@ biomodals_script: modal_ligandmpnn.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
 ### Option 1: Local installation (recommended)
 ```bash
@@ -49,12 +49,15 @@ python protein_mpnn_run.py \
 ### Option 2: Modal (via LigandMPNN wrapper)
 ```bash
 cd biomodals
+# modal_ligandmpnn.py takes --input-pdb and forwards run.py args via --params-str
 modal run modal_ligandmpnn.py \
-  --pdb-path backbone.pdb \
-  --num-seq-per-target 16
+  --input-pdb backbone.pdb \
+  --params-str "--model_type protein_mpnn --number_of_batches 16 --temperature 0.1"
 ```
 
-Note: LigandMPNN includes ProteinMPNN functionality.
+**GPU** (Modal): A10G default | **Timeout**: 900s default
+
+Note: LigandMPNN includes ProteinMPNN functionality (select with `--model_type protein_mpnn`).
 
 ## Config Schema
 

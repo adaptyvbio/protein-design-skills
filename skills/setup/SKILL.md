@@ -123,8 +123,8 @@ cd biomodals
 # Design binders with BoltzGen (requires YAML config)
 modal run modal_boltzgen.py --input-yaml binder.yaml --protocol protein-anything --num-designs 50
 
-# Generate backbones with RFdiffusion
-modal run modal_rfdiffusion.py --pdb target.pdb --contigs "A1-150/0 70-100" --num-designs 100
+# Generate backbones with RFdiffusion (official repo, not biomodals)
+python run_inference.py inference.input_pdb=target.pdb contigmap.contigs=[A1-150/0 70-100] inference.num_designs=100
 
 # Validate with Chai
 modal run modal_chai1.py --input-faa designs.fasta
@@ -135,7 +135,6 @@ modal run modal_chai1.py --input-faa designs.fasta
 Set GPU with environment variable:
 
 ```bash
-GPU=A10G modal run modal_rfdiffusion.py --pdb target.pdb --contigs "A1-100/0 50-80" --num-designs 10
 GPU=L40S modal run modal_boltzgen.py --input-yaml config.yaml --num-designs 50
 GPU=A100 modal run modal_chai1.py --input-faa complex.fasta
 ```
@@ -156,4 +155,4 @@ Modal offers $30/month in free credits - enough for:
 
 ---
 
-**Full documentation**: See [Installation Guide](../../docs/installation.md)
+**Full documentation**: See [Getting started](../../docs/getting-started.md)

@@ -8,9 +8,12 @@ Master decision tree for choosing the right protein design tool.
 What are you designing?
 │
 ├─ Miniprotein binder (60-100 AA)
-│  ├─ Need diversity/exploration → rfdiffusion
-│  ├─ Need high success rate → bindcraft
-│  └─ Need all-atom precision → boltzgen
+│  ├─ Lowest cost/effort default → boltzgen
+│  ├─ Hard/important target, can tune → mosaic
+│  ├─ Diversity/exploration → rfdiffusion
+│  └─ End-to-end with validation → bindcraft
+│
+├─ Antibody / nanobody → germinal
 │
 ├─ Sequence design (have backbone)
 │  ├─ Standard design → proteinmpnn
@@ -18,9 +21,13 @@ What are you designing?
 │  └─ Need solubility → solublempnn
 │
 └─ Structure prediction (validation)
-   ├─ Need open weights → boltz
+   ├─ Need open weights → boltz, chai, or protenix
+   ├─ Antibody-antigen complex → protenix-v2
    └─ Need highest accuracy → alphafold
 ```
+
+Hit-rate is target-dependent for every method and you cannot know a priori which wins;
+pick by cost/effort to a binder. See the `binder-design` skill for head-to-head results.
 
 ## Tool comparison
 
@@ -28,9 +35,11 @@ What are you designing?
 
 | Tool | Method | Strengths | Weaknesses | Best For |
 |------|--------|-----------|------------|----------|
-| rfdiffusion | Diffusion | High diversity, fast | Needs ProteinMPNN | Exploration |
-| bindcraft | End-to-end | High success rate | Less diverse | Production |
-| boltzgen | All-atom diffusion | Side-chain aware | Slower | Precision |
+| boltzgen | All-atom diffusion | Cheap, turnkey, side-chain aware | One model in the loop | Lowest cost/effort default |
+| mosaic | Gradient, multi-model | Composable objective, won hard head-to-heads | Needs tuning, local JAX | Hard/important targets |
+| rfdiffusion | Diffusion | High diversity | Needs ProteinMPNN; not in biomodals | Exploration |
+| bindcraft | End-to-end | Built-in AF2 validation | Less diverse | Production |
+| germinal | Hallucination + AbMPNN | Antibody / nanobody formats | Finicky | scFv / VHH |
 
 ### Sequence tools
 
@@ -45,7 +54,8 @@ What are you designing?
 | Tool | MSA | Speed | Best For |
 |------|-----|-------|----------|
 | chai | No | ~20-40s | Speed + ligands |
-| boltz | No | ~15-30s | Open weights |
+| boltz | No | ~15-30s | Open weights, Boltz-2 affinity |
+| protenix | Optional | ~60s+ | Open AF3 reproduction; v2 for antibody-antigen |
 | alphafold | Yes | ~60s+ | High accuracy |
 
 ## Recommended combinations

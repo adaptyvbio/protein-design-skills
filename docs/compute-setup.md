@@ -60,8 +60,8 @@ For local GPU execution, each tool requires specific setup. See individual skill
 
 Set GPU in Modal:
 ```bash
-GPU=A10G uvx modal run modal_rfdiffusion.py ...
-GPU=L40S uvx modal run modal_boltzgen.py ...
+GPU=L40S uv run --with modal modal run modal_boltzgen.py ...
+MODAL_GPU=A100 uv run --with modal modal run modal_esmfold2.py ...
 ```
 
 ## Tool-specific requirements
@@ -70,7 +70,7 @@ GPU=L40S uvx modal run modal_boltzgen.py ...
 |------|-------------|-------------|------------------|
 | BoltzGen | L40S (48GB) | A100 | modal_boltzgen.py |
 | BindCraft | L40S (48GB) | L40S | modal_bindcraft.py |
-| RFdiffusion | A10G (24GB) | A10G | modal_rfdiffusion.py |
+| RFdiffusion | A10G (24GB) | A10G | not in biomodals; official repo |
 | ProteinMPNN | T4 (16GB) | T4 | modal_ligandmpnn.py |
 | LigandMPNN | T4 (16GB) | T4 | modal_ligandmpnn.py |
 | Chai | A10G (24GB) | A100 | modal_chai1.py |
@@ -100,6 +100,6 @@ First run downloads model weights. Subsequent runs are faster.
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 24 skills
 - [Getting started](getting-started.md) - Setup guide
 - [Standard pipeline](standard-pipeline.md) - Full workflow

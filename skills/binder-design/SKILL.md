@@ -16,47 +16,92 @@ tags: [guidance, tool-selection, workflow]
 
 # Binder Design Tool Selection
 
-## Decision tree
+## Which tool wins
+
+No single tool is best for every target. Hit-rate is strongly target-dependent, so
+choose by target type, what you want to control, and available compute.
+
+The clearest signal comes from head-to-head competitions where many methods design
+against the same target. On the Adaptyv Nipah de novo target, the public results show:
+
+| Method | Tested | Binders | Hit-rate |
+|--------|--------|---------|----------|
+| Mosaic (gradient, multi-model) | 9 | 8 | 89% |
+| ProteinMPNN hybrid | 28 | 7 | 25% |
+| RFdiffusion | 60 | 13 | 22% |
+| BindCraft | 98 | 7 | 7% |
+| BoltzGen | 182 | 6 | 3% |
+
+Mosaic had the highest hit-rate here, but on a small, expert-tuned sample. The ranking
+shifts on other targets, and that target-dependence is true of every method (BoltzGen,
+Boltz, BindCraft, Mosaic). You cannot know a priori which will win on a new target, so
+this is not a fixed leaderboard.
+
+Because of that, choose a starting point by **cost and effort to a binder**, not by
+assuming a method has the best hit-rate. BoltzGen is the suggested default because it is
+turnkey and all-atom, so it gets you testable designs fastest with the least setup.
+Mosaic is the high-ceiling option when you can invest time tuning the objective. On a
+hard or important target, running more than one method in parallel is reasonable.
 
 ```
 De novo binder design?
 │
-├─ Standard target → BoltzGen (recommended)
-│   All-atom output (no separate ProteinMPNN step needed)
-│   Better for ligand/small molecule binding
-│   Single-step design (backbone + sequence + side chains)
-│
-├─ Need diversity/exploration → RFdiffusion + ProteinMPNN
-│   Maximum backbone diversity
-│   Two-step: backbone then sequence
-│
-├─ Integrated validation → BindCraft
-│   Built-in AF2 validation
-│   End-to-end pipeline
-│
-├─ Ligand binding → BoltzGen ✓
-│   All-atom diffusion handles ligand context
-│
-├─ Peptide/nanobody → Germinal
-│   VHH/nanobody design
-│   Germline-aware optimization
-│
-└─ Antibody/Nanobody
-    +-- VHH design --> germinal skill
+├─ Lowest cost/effort to testable designs → BoltzGen (default)
+├─ Hard/important target, can invest tuning → Mosaic (gradient, multi-model)
+├─ Ligand / small-molecule binding → BoltzGen (all-atom)
+├─ Diversity / exploration → RFdiffusion + ProteinMPNN
+├─ End-to-end with built-in validation → BindCraft
+└─ Antibody / nanobody (VHH) → germinal skill (also mber, iggm in biomodals)
 ```
 
 ## Tool comparison
 
-| Tool | Strengths | Weaknesses | Best For |
+| Tool | Strengths | Weaknesses | Best for |
 |------|-----------|------------|----------|
-| BoltzGen | All-atom, single-step, ligand-aware | Higher GPU requirement | Standard (recommended) |
+| BoltzGen | All-atom, single-step, turnkey | One model in the loop; mid-range cost per design | Lowest-effort default, ligand binding |
+| Mosaic | Composable multi-model objective, won hard head-to-heads | Needs tuning, local JAX only | Hard or important targets, expert use |
 | BindCraft | End-to-end, built-in AF2 validation | Less diverse | Production campaigns |
-| RFdiffusion | High diversity, fast | Requires ProteinMPNN | Exploration, diversity |
-| Germinal | Nanobody/VHH design | Specialized | Antibody optimization |
+| RFdiffusion | High diversity | Requires ProteinMPNN; not in biomodals | Exploration, diversity |
+| Germinal | Antibody and nanobody formats | Finicky | scFv / VHH design |
 
-## Recommended Pipeline: BoltzGen → Chai → QC
+## Compute cost per design
 
-BoltzGen provides all-atom design with built-in side-chain packing:
+Adaptyv's own tests of these models showed the following compute cost per accepted
+design, averaged across 7 targets (it varies several-fold by target):
+
+| Method | Cost per design |
+|--------|-----------------|
+| RSO | ~$0.15 |
+| RFdiffusion | ~$0.25 |
+| Mosaic | ~$0.55 |
+| ESMFold2 inversion | ~$0.85 |
+| mBER | ~$1.40 |
+| Germinal | ~$1.60 |
+| BoltzGen | ~$1.80 |
+| BindCraft | ~$2.90 |
+
+Per-design compute cost is not the same as cost to a binder, which also depends on the
+hit-rate on your target. The gradient methods (RSO, Mosaic) are cheap per design but
+need setup and tuning; BoltzGen and BindCraft cost more per design but are turnkey, so
+their advantage is low human effort rather than lowest compute cost.
+
+## Compute vs effort tradeoff
+
+- **Lowest human effort**: BoltzGen needs no tuning and runs through biomodals. Good
+  first pass and good for ligand binding.
+- **Highest ceiling on a hard target**: Mosaic, given time to design and tune the
+  objective. It runs locally on a JAX GPU rather than through biomodals, and is cheap
+  per design.
+- Whatever the generator, validate with `boltz` or `chai` and rank with `ipsae`.
+
+Other biomodals-backed options: `modal_rso.py` (Rejection Sampling Optimization, an
+AlphaFold-based gradient method) for minibinders, and `modal_mber.py` for VHH
+nanobodies.
+
+## Example pipeline: BoltzGen → Chai → QC
+
+BoltzGen provides all-atom design with built-in side-chain packing. This is one
+turnkey path; swap in Mosaic, RFdiffusion, or BindCraft depending on the target.
 
 ```
 Target → BoltzGen → Validate → Filter
@@ -77,7 +122,7 @@ Target → BoltzGen → Validate → Filter
 - Prefer charged/aromatic residues
 - Cluster spatially (within 10-15A)
 
-### 3. Design with BoltzGen (Recommended)
+### 3. Design with BoltzGen
 
 First, create a YAML config file (e.g., `binder.yaml`):
 ```yaml
@@ -113,18 +158,17 @@ modal run modal_boltzgen.py \
 ### 4. Alternative: RFdiffusion Pipeline
 For maximum diversity or when backbone-only is preferred:
 ```bash
-# Step 1: Backbone generation
-modal run modal_rfdiffusion.py \
-  --pdb target.pdb \
-  --contigs "A1-150/0 70-100" \
-  --hotspot "A45,A67,A89" \
-  --num-designs 500
+# Step 1: Backbone generation (RFdiffusion, run from the official repo)
+python run_inference.py \
+  inference.input_pdb=target.pdb \
+  contigmap.contigs=[A1-150/0 70-100] \
+  ppi.hotspot_res=[A45,A67,A89] \
+  inference.num_designs=500
 
 # Step 2: Sequence design
 modal run modal_ligandmpnn.py \
-  --pdb-path backbone.pdb \
-  --num-seq-per-target 16 \
-  --sampling-temp 0.1
+  --input-pdb backbone.pdb \
+  --params-str "--number_of_batches 16 --temperature 0.1"
 ```
 
 ### 5. Validation

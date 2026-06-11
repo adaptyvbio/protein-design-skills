@@ -30,13 +30,13 @@ biomodals_script: modal_alphafold.py
 
 ## How to run
 
-> **First time?** See [Installation Guide](../../docs/installation.md) to set up Modal and biomodals.
+> **First time?** See [Getting started](../../docs/getting-started.md) to set up Modal and biomodals.
 
-### Option 1: ColabFold (recommended for multimer)
+### Option 1: Modal (AlphaFold-Multimer)
 ```bash
 cd biomodals
-modal run modal_colabfold.py \
-  --input-faa sequences.fasta \
+modal run modal_alphafold.py \
+  --input-fasta sequences.fasta \
   --out-dir output/
 ```
 
@@ -44,7 +44,7 @@ modal run modal_colabfold.py \
 
 ### Option 2: Local installation
 ```bash
-git clone https://github.com/deepmind/alphafold.git
+git clone https://github.com/google-deepmind/alphafold.git
 cd alphafold
 
 python run_alphafold.py \
@@ -54,10 +54,10 @@ python run_alphafold.py \
   --max_template_date=2026-01-01
 ```
 
-### Option 3: ESMFold (fast single-chain)
+### Option 3: ESMFold2 (fast single-sequence)
 ```bash
-modal run modal_esmfold.py \
-  --sequence "MKTAYIAKQRQISFVK..."
+printf '>protein|A\nMKTAYIAKQRQISFVK...\n' > seq.faa
+uv run --with modal modal run modal_esmfold2.py --input-faa seq.faa
 ```
 
 ## Key parameters

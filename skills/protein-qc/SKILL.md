@@ -51,13 +51,16 @@ Each category has two levels:
 | **Structural** | pLDDT | > 0.85 | > 0.90 | AF2/Chai/Boltz |
 | | pTM | > 0.70 | > 0.80 | AF2/Chai/Boltz |
 | | scRMSD | < 2.0 Å | < 1.5 Å | Design vs pred |
-| **Binding** | ipTM | > 0.50 | > 0.60 | AF2/Chai/Boltz |
+| **Binding** | ipSAE_min | > 0.61 | > 0.70 | AF3/Boltz (see ipsae) |
+| | ipTM | > 0.50 | > 0.60 | AF2/Chai/Boltz |
 | | PAE_interaction | < 12 Å | < 10 Å | AF2/Chai/Boltz |
-| | Shape Comp (SC) | > 0.50 | > 0.60 | PyRosetta |
+| | Shape Comp (SC) | > 0.50 | > 0.62 | PyRosetta |
 | | interface_dG | < -10 | < -15 | PyRosetta |
+| | Interface BUNS | <= 4 | <= 2 | PyRosetta |
 | **Expression** | Instability | < 40 | < 30 | BioPython |
 | | GRAVY | < 0.4 | < 0.2 | BioPython |
 | | ESM2 PLL | > 0.0 | > 0.2 | ESM2 |
+| | Folding ΔG | < -2 kcal/mol | < -4 kcal/mol | SaProtΔG |
 
 ### Design-Level Checks (Expression)
 | Pattern | Risk | Action |
@@ -68,6 +71,85 @@ Each category has two levels:
 | >= 6 hydrophobic run | Aggregation | Redesign |
 
 See: references/binding-qc.md, references/expression-qc.md, references/structural-qc.md
+
+---
+
+## Interface metrics (PyRosetta)
+
+Beyond shape complementarity and interface_dG, two interface metrics catch common
+de novo failure modes:
+
+- **Buried unsatisfied H-bonds (BUNS)**: buried polar atoms making no hydrogen bond.
+  This is a dominant energetic failure mode and is orthogonal to dG and dSASA. Keep
+  interface BUNS at or below 4 (standard) or 2 (stringent).
+- **ContactMolecularSurface**: shape-complementarity-weighted contact area that, unlike
+  dSASA, is not fooled by gappy or holey interfaces. Higher is better.
+
+Both are in the Cao 2022, AlphaProteo, and BindCraft filter sets.
+
+For structure-quality ranking, biomodals also provides `modal_af2rank.py` (AF2Rank),
+which scores how well a design re-predicts from its own structure as a template.
+
+## Binder ranking (benchmark-backed)
+
+A meta-analysis of 3,766 experimentally tested binders across 15 targets (Overath et
+al., bioRxiv 2025, doi:10.1101/2025.08.14.670059) found that AF3 `ipSAE_min` is the
+single best in-silico predictor of binding, and that a simple linear model of three
+features generalizes best across targets. Complexity did not help: gradient-boosted
+and many-feature models did not beat the linear one.
+
+Recommended filtering strategies from that work:
+
+1. Threshold on one of: `AF3 ipSAE_min > 0.61`, or `ipSAE_min × interface_ΔG/ΔSASA <
+   -1.5`, or `LIS × shape_complementarity > 0.42`.
+2. Pre-filter on `shape_complementarity > 0.62` and `RMSD_binder < 3.73` (input vs
+   re-predicted), then take the top-K by `ipSAE_min`.
+
+`ipSAE_min` is the minimum of the two asymmetric ipSAE directions (binder→target and
+target→binder), not the average or max. Use the `ipsae` skill to compute it. Note the
+RMSD_binder filter can be over-restrictive on some targets, so prefer it as a soft
+pre-filter rather than a hard cutoff.
+
+## Stability prediction (small domains)
+
+For small domains (roughly 60 to 80 residues, the minibinder range), absolute folding
+stability can be predicted directly. SaProtΔG (Cho et al., bioRxiv 2026,
+doi:10.64898/2026.05.19.726285) predicts absolute folding ΔG at about 0.8 kcal/mol RMSE
+and improves discrimination of stable versus unstable designed proteins. Use the SaProt
+variant rather than the ESM3 variant for commercial work, since the ESM3 weights are
+non-commercial. Filter for more negative (more stable) ΔG.
+
+## Sequence-liability scan
+
+Implement liability checks directly as motif rules rather than taking an
+antibody-specific dependency. Severity rises with solvent exposure (gate by SASA when a
+structure is available).
+
+```python
+import re
+
+LIABILITIES = {
+    "deamidation":   (r"N[GSNTH]",   "NG/NS high, NN/NT moderate"),
+    "isomerization": (r"D[GSTDH]",   "Asp isomerization"),
+    "N-glycosylation": (r"N[^P][ST]", "NxS/T sequon"),
+    "polybasic":     (r"[KR]{3,}",   "proteolysis / charge patch"),
+    "hydrophobic_run": (r"[AILMFWVY]{6,}", "aggregation"),
+}
+
+def scan_liabilities(seq):
+    hits = {}
+    for name, (pattern, note) in LIABILITIES.items():
+        positions = [m.start() for m in re.finditer(pattern, seq)]
+        if positions:
+            hits[name] = (positions, note)
+    # Unpaired cysteine check
+    if seq.count("C") % 2 == 1:
+        hits["unpaired_cysteine"] = ([seq.index("C")], "odd cysteine count")
+    return hits
+```
+
+Met and Trp oxidation are also liabilities but should be flagged only when the residue
+is solvent-exposed.
 
 ---
 
@@ -195,7 +277,7 @@ Low pLDDT across campaign
 │   └── Low scRMSD but low pLDDT: Disordered regions
 │       └── Fix: Check design length, simplify topology
 ├── Try more sequences per backbone
-│   └── modal run modal_proteinmpnn.py --num-seq-per-target 32 --sampling-temp 0.1
+│   └── modal run modal_ligandmpnn.py --input-pdb bb.pdb --params-str "--number_of_batches 32 --temperature 0.1"
 ├── Use SolubleMPNN instead of ProteinMPNN
 │   └── Better for expression-optimized sequences
 └── Consider different design tool
@@ -224,8 +306,8 @@ Low ipTM across campaign
 ```
 Sequences don't specify intended structure
 ├── ProteinMPNN issue
-│   ├── Lower temperature: --sampling-temp 0.1
-│   ├── Increase sequences: --num-seq-per-target 32
+│   ├── Lower temperature: --sampling_temp "0.1"
+│   ├── Increase sequences: --num_seq_per_target 32
 │   └── Check fixed_positions aren't over-constraining
 ├── Backbone geometry issue
 │   ├── Backbones may be unusual/strained

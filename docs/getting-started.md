@@ -53,7 +53,7 @@ git clone https://github.com/hgbrian/biomodals
 cd biomodals
 ```
 
-Verify: You should see files like `modal_boltzgen.py`, `modal_rfdiffusion.py`
+Verify: You should see files like `modal_boltzgen.py`, `modal_chai1.py`, `modal_esmfold2.py`
 
 ## Step 4: Test your setup
 
@@ -64,13 +64,12 @@ cd biomodals
 uvx modal run modal_boltzgen.py --help
 ```
 
-Expected output:
+Expected output (key options):
 ```
-Usage: modal_boltzgen.py [OPTIONS]
-Options:
-  --target TEXT          Target PDB file
-  --num-designs INTEGER  Number of designs to generate
-  ...
+modal_boltzgen.py
+  --input-yaml TEXT     Design specification YAML (required)
+  --protocol TEXT       protein-anything (default), peptide-anything, ...
+  --num-designs INTEGER Number of designs to generate
 ```
 
 ## Step 5: Run your first design
@@ -80,56 +79,48 @@ Options:
 curl -o target.pdb https://files.rcsb.org/download/1ALU.pdb
 ```
 
-### Run BoltzGen (Recommended Pipeline)
+### Run BoltzGen
+BoltzGen takes a YAML design spec (see the `boltzgen` skill for the format):
 ```bash
-uvx modal run modal_boltzgen.py --target target.pdb --num-designs 5
-```
-
-Expected output:
-```
-[INFO] Loading BoltzGen model...
-[INFO] Generating 5 designs...
-[INFO] Design 1/5 completed
-...
-[INFO] Saved to output/
+uvx modal run modal_boltzgen.py --input-yaml binder.yaml --protocol protein-anything --num-designs 5
 ```
 
 ## Quick reference: common commands
 
 ### Design
 ```bash
-# BoltzGen (recommended - all-atom)
-uvx modal run modal_boltzgen.py --target target.pdb --num-designs 50
+# BoltzGen (all-atom, single-step); needs a YAML design spec
+uvx modal run modal_boltzgen.py --input-yaml binder.yaml --protocol protein-anything --num-designs 50
 
-# RFdiffusion (backbone generation)
-uvx modal run modal_rfdiffusion.py --input-pdb target.pdb --contigs "A1-150/0 70-100" --num-designs 100
+# RFdiffusion (backbone generation; official repo, not biomodals)
+python run_inference.py inference.input_pdb=target.pdb 'contigmap.contigs=[A1-150/0 70-100]' inference.num_designs=100
 
 # BindCraft (end-to-end)
-uvx modal run modal_bindcraft.py --target-pdb target.pdb --num-designs 50
+uvx modal run modal_bindcraft.py --input-pdb target.pdb --lengths "70,100" --number-of-final-designs 50
 ```
 
 ### Sequence design
 ```bash
-# LigandMPNN/ProteinMPNN
-uvx modal run modal_ligandmpnn.py --pdb-path backbone.pdb --num-seq-per-target 8
+# LigandMPNN (also runs ProteinMPNN weights); extra args go in --params-str
+uvx modal run modal_ligandmpnn.py --input-pdb backbone.pdb --params-str "--number_of_batches 8 --temperature 0.1"
 ```
 
 ### Validation
 ```bash
 # Chai (fast, no MSA)
-uvx modal run modal_chai1.py --fasta-path designs.fasta --output-dir predictions/
+uvx modal run modal_chai1.py --input-faa designs.fasta --out-dir predictions/
 
 # Boltz (open-source)
-uvx modal run modal_boltz.py --fasta-path designs.fasta --output-dir predictions/
+uvx modal run modal_boltz.py --input-faa designs.fasta --out-dir predictions/
 ```
 
 ## GPU selection
 
 Set GPU with environment variable:
 ```bash
-GPU=A10G uvx modal run modal_rfdiffusion.py ...
 GPU=L40S uvx modal run modal_boltzgen.py ...
 GPU=A100 uvx modal run modal_chai1.py ...
+MODAL_GPU=A100 uvx modal run modal_esmfold2.py ...
 ```
 
 | GPU | VRAM | Best For |
@@ -171,6 +162,6 @@ First run downloads model weights (~5-10 min). Subsequent runs are faster.
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 24 skills
 - [Standard pipeline](standard-pipeline.md) - Full workflow details
 - [Compute setup](compute-setup.md) - Modal vs local setup

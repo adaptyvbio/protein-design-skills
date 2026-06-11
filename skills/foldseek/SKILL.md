@@ -73,15 +73,15 @@ def foldseek_search(query_pdb, database, output="results.m8"):
 | `--min-seq-id` | 0.0 | Minimum sequence identity |
 | `-e` | 0.001 | E-value threshold |
 | `--alignment-type` | 2 | 0=3Di, 1=TM, 2=3Di+AA |
-| `--max-seqs` | 300 | Max hits to pass through prefilter; reducing this affects sensitivity |
+| `--max-seqs` | 1000 | Max hits to pass through prefilter; reducing this affects sensitivity |
 
 ## Databases
 
 | Database | Description | Size |
 |----------|-------------|------|
-| `pdb100` | PDB clustered at 100% | ~200K structures |
-| `afdb50` | AlphaFold DB at 50% | ~67M structures |
-| `swissprot` | SwissProt structures | ~500K structures |
+| `pdb100` | PDB chains | ~340K structures |
+| `afdb50` | AlphaFold DB clustered at 50% sequence identity | ~53M structures |
+| `swissprot` | SwissProt structures | ~540K structures |
 | `cath50` | CATH domains | ~50K domains |
 
 ## Output format
@@ -98,17 +98,13 @@ query   2def_B          72.1    115     1e-32   145.2
 ### Successful run
 ```
 $ foldseek easy-search query.pdb pdb100 results.m8 tmp/
-[INFO] Loading database: pdb100 (194,527 entries)
-[INFO] Searching...
-[INFO] Found 127 hits
-
-Top 5 hits:
-1. 1abc_A - 85.2% identity, E=1e-45
-2. 2def_B - 72.1% identity, E=1e-32
-3. 3ghi_C - 68.5% identity, E=1e-28
-4. 4jkl_A - 55.3% identity, E=1e-18
-5. 5mno_B - 42.1% identity, E=1e-10
+# results.m8 columns: query target pident alnlen mismatch gapopen qstart qend tstart tend evalue bits
+query   1abc_A  85.2  120  ...  1e-45  180.5
+query   2def_B  72.1  115  ...  1e-32  145.2
 ```
+
+Hit identities and E-values above are placeholders; foldseek does not print the
+`[INFO]` lines shown by some other tools.
 
 ## Decision tree
 

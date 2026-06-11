@@ -2,14 +2,19 @@
 
 End-to-end protein binder design workflow.
 
-## Recommended: BoltzGen pipeline
+No single design tool is best for every target. This page walks through a BoltzGen
+pipeline and an RFdiffusion alternative; pick by target type and compute. BindCraft
+and Mosaic are also options (see the `binder-design` skill).
+
+## BoltzGen pipeline
 
 ```
 Target → BoltzGen → Validate → Filter → Experiment
  (pdb)  (all-atom)   (chai)     (qc)    (cfps/spr)
 ```
 
-BoltzGen provides all-atom design with built-in side-chain packing - no separate sequence design step needed.
+BoltzGen provides all-atom design with built-in side-chain packing, so it needs no
+separate sequence design step.
 
 ### Why BoltzGen?
 - **All-atom output**: Backbone + sequence + side chains in one step
@@ -46,14 +51,15 @@ io.save('target_chainA.pdb', ChainSelect())
 - [ ] Residue numbering verified
 - [ ] 3-6 hotspots identified (surface-exposed)
 
-## Phase 2: Design with BoltzGen (recommended)
+## Phase 2: Design with BoltzGen
 
 **Skill**: `boltzgen`
 
 ```bash
+# BoltzGen takes a YAML design spec (binding site set inside it); see the boltzgen skill
 uvx modal run modal_boltzgen.py \
-  --target target_chainA.pdb \
-  --hotspot-res "A42,A58,A62" \
+  --input-yaml binder.yaml \
+  --protocol protein-anything \
   --num-designs 50
 ```
 
@@ -67,19 +73,19 @@ For maximum diversity or backbone-only control:
 
 **Step 1: Backbone Generation** (`rfdiffusion`)
 ```bash
-uvx modal run modal_rfdiffusion.py \
-  --input-pdb target_chainA.pdb \
-  --contigs "A1-150/0 70-90" \
-  --hotspot-res "A42,A58,A62" \
-  --num-designs 100
+# RFdiffusion runs from the official repo, not biomodals
+python run_inference.py \
+  inference.input_pdb=target_chainA.pdb \
+  contigmap.contigs=[A1-150/0 70-90] \
+  ppi.hotspot_res=[A42,A58,A62] \
+  inference.num_designs=100
 ```
 
 **Step 2: Sequence Design** (`ligandmpnn`)
 ```bash
 uvx modal run modal_ligandmpnn.py \
-  --pdb-path output/output_0.pdb \
-  --num-seq-per-target 8 \
-  --sampling-temp 0.1
+  --input-pdb output/output_0.pdb \
+  --params-str "--number_of_batches 8 --temperature 0.1"
 ```
 
 **Expected**: 100 backbones × 8 sequences = 800 sequences
@@ -91,8 +97,8 @@ uvx modal run modal_ligandmpnn.py \
 ```bash
 # Validate with Chai
 uvx modal run modal_chai1.py \
-  --fasta-path all_designs.fasta \
-  --output-dir predictions/
+  --input-faa all_designs.fasta \
+  --out-dir predictions/
 ```
 
 **Expected**: Predictions with pLDDT, pTM, ipTM scores
@@ -125,7 +131,7 @@ print(f"Passing: {len(passing)}")  # Expect 10-15% pass rate
 
 ## Timeline comparison
 
-### BoltzGen pipeline (recommended)
+### BoltzGen pipeline
 | Phase | Tool | Time | Output |
 |-------|------|------|--------|
 | Target prep | pdb | 10 min | 1 PDB |
@@ -164,6 +170,6 @@ After filtering:
 
 ## See also
 
-- [Skills](skills.md) - All 21 skills
+- [Skills](skills.md) - All 24 skills
 - [Getting started](getting-started.md) - Setup guide
 - [Compute setup](compute-setup.md) - Modal vs local setup

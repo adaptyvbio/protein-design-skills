@@ -1,6 +1,6 @@
 # Skills
 
-All 21 skills available in Protein Design Skills.
+All 24 skills available in Protein Design Skills.
 
 ## Install
 
@@ -13,8 +13,8 @@ Or install specific categories:
 
 | Command | Skills | Description |
 |---------|--------|-------------|
-| `/plugin install adaptyv@protein-design-skills` | 21 | Everything |
-| `/plugin install design-tools@protein-design-skills` | 10 | BoltzGen, BindCraft, RFdiffusion, ProteinMPNN, Chai, etc. |
+| `/plugin install adaptyv@protein-design-skills` | 24 | Everything |
+| `/plugin install design-tools@protein-design-skills` | 13 | BoltzGen, BindCraft, RFdiffusion, Mosaic, Germinal, Protenix, Chai, etc. |
 | `/plugin install evaluation@protein-design-skills` | 2 | protein-qc, ipsae |
 | `/plugin install utilities@protein-design-skills` | 4 | pdb, uniprot, foldseek, setup |
 | `/plugin install experimental@protein-design-skills` | 2 | cell-free-expression, binding-characterization |
@@ -22,13 +22,16 @@ Or install specific categories:
 
 ---
 
-## Design tools (10)
+## Design tools (13)
 
 | Skill | Purpose |
 |-------|---------|
-| `boltzgen` | All-atom diffusion (recommended) |
+| `boltzgen` | All-atom diffusion design |
 | `bindcraft` | End-to-end binder design |
 | `rfdiffusion` | Backbone generation |
+| `mosaic` | Multi-objective gradient design |
+| `germinal` | Antibody / nanobody design |
+| `protenix` | Structure prediction (open AF3) |
 | `proteinmpnn` | Inverse folding |
 | `ligandmpnn` | Ligand-aware sequence design |
 | `solublempnn` | Solubility-optimized design |
@@ -74,7 +77,7 @@ Or install specific categories:
 
 For detailed usage of each skill, see the individual skill documentation:
 
-- **Design tools**: [BoltzGen](../skills/boltzgen/SKILL.md), [BindCraft](../skills/bindcraft/SKILL.md), [RFdiffusion](../skills/rfdiffusion/SKILL.md), [ProteinMPNN](../skills/proteinmpnn/SKILL.md), [LigandMPNN](../skills/ligandmpnn/SKILL.md), [SolubleMPNN](../skills/solublempnn/SKILL.md), [Chai](../skills/chai/SKILL.md), [Boltz](../skills/boltz/SKILL.md), [AlphaFold](../skills/alphafold/SKILL.md), [ESM](../skills/esm/SKILL.md)
+- **Design tools**: [BoltzGen](../skills/boltzgen/SKILL.md), [BindCraft](../skills/bindcraft/SKILL.md), [RFdiffusion](../skills/rfdiffusion/SKILL.md), [Mosaic](../skills/mosaic/SKILL.md), [Germinal](../skills/germinal/SKILL.md), [ProteinMPNN](../skills/proteinmpnn/SKILL.md), [LigandMPNN](../skills/ligandmpnn/SKILL.md), [SolubleMPNN](../skills/solublempnn/SKILL.md), [Chai](../skills/chai/SKILL.md), [Boltz](../skills/boltz/SKILL.md), [Protenix](../skills/protenix/SKILL.md), [AlphaFold](../skills/alphafold/SKILL.md), [ESM](../skills/esm/SKILL.md)
 
 - **Evaluation**: [Protein QC](../skills/protein-qc/SKILL.md), [ipSAE](../skills/ipsae/SKILL.md)
 
