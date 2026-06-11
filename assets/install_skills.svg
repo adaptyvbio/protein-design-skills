@@ -28,13 +28,13 @@
     <!-- Command 2 -->
     <text x="0" y="88" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&gt;</text>
     <text x="16" y="88" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">/plugin install </text>
-    <text x="140" y="88" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">all</text>
-    <text x="165" y="88" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">@protein-design-skills</text>
+    <text x="140" y="88" fill="#F59E0B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">adaptyv</text>
+    <text x="195" y="88" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">@protein-design-skills</text>
 
     <!-- Output 2 -->
     <text x="0" y="112" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
     <text x="16" y="112" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">Installed </text>
-    <text x="88" y="112" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">21 skills</text>
+    <text x="88" y="112" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">24 skills</text>
 
     <!-- Output 3 -->
     <text x="0" y="136" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>

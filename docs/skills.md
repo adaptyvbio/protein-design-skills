@@ -9,16 +9,8 @@ All 24 skills available in Protein Design Skills.
 /plugin install adaptyv@protein-design-skills
 ```
 
-Or install specific categories:
-
-| Command | Skills | Description |
-|---------|--------|-------------|
-| `/plugin install adaptyv@protein-design-skills` | 24 | Everything |
-| `/plugin install design-tools@protein-design-skills` | 13 | BoltzGen, BindCraft, RFdiffusion, Mosaic, Germinal, Protenix, Chai, etc. |
-| `/plugin install evaluation@protein-design-skills` | 2 | protein-qc, ipsae |
-| `/plugin install utilities@protein-design-skills` | 4 | pdb, uniprot, foldseek, setup |
-| `/plugin install experimental@protein-design-skills` | 2 | cell-free-expression, binding-characterization |
-| `/plugin install orchestration@protein-design-skills` | 3 | binder-design, protein-design-workflow, campaign-manager |
+This installs all 24 skills. The categories below organize them for reference; they are
+not separate installs.
 
 ---
 

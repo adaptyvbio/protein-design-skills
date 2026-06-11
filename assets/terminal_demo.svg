@@ -27,7 +27,7 @@
 
       <!-- Title -->
       <text x="48" y="18" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="16" font-weight="600">Protein Design Skills</text>
-      <text x="215" y="18" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="11">v2.0.0</text>
+      <text x="215" y="18" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="11">v2.1.0</text>
     </g>
 
     <!-- Command -->
@@ -37,7 +37,7 @@
     <!-- Output -->
     <text x="16" y="98" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">&#10003;</text>
     <text x="30" y="98" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">Loaded </text>
-    <text x="82" y="98" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">21 skills</text>
+    <text x="82" y="98" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">24 skills</text>
     <text x="155" y="98" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12"> from protein-design-skills</text>
 
     <!-- Section header -->
@@ -47,7 +47,7 @@
     <g transform="translate(16, 150)">
       <!-- design -->
       <text x="0" y="0" fill="#36B7F6" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">design</text>
-      <text x="100" y="0" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">boltzgen, bindcraft, rfdiffusion, chai, boltz</text>
+      <text x="100" y="0" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">boltzgen, mosaic, bindcraft, germinal, protenix, …</text>
 
       <!-- evaluation -->
       <text x="0" y="22" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">evaluation</text>
@@ -63,7 +63,7 @@
 
       <!-- orchestration -->
       <text x="0" y="88" fill="#EC4899" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">orchestration</text>
-      <text x="100" y="88" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">binder-design, campaign-manager</text>
+      <text x="100" y="88" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="12">binder-design, campaign-manager, protein-design-workflow</text>
     </g>
 
     <!-- Prompt with user input -->
