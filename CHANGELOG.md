@@ -40,6 +40,14 @@
 - Measured compute cost per accepted design (averaged across 7 internal benchmark
   targets) added to binder-design and the relevant tool skills
 
+### Fixed (follow-up)
+- Marketplace now ships a single `adaptyv` plugin (all 24 skills). The previous
+  category and single-skill plugins all loaded every skill anyway, since a plugin's
+  skills are discovered by scanning its source directory and cannot be subset per entry
+  in a flat repo. Docs updated to match.
+- Corrected stale README and asset SVGs: skill count 21 to 24, design-tools count to 13,
+  the install command (`adaptyv@`, not `all@`)
+
 ## [2.0.0] - 2026-01-16
 
 ### Added

@@ -13,10 +13,10 @@ In Claude Code, run:
 
 ```
 /plugin marketplace add adaptyvbio/protein-design-skills
-/plugin install design-tools@protein-design-skills
+/plugin install adaptyv@protein-design-skills
 ```
 
-**Available plugins:** `design-tools`, `evaluation`, `utilities`, `experimental`, `orchestration`
+This installs all 24 skills.
 
 ## Step 2: Set up Modal
 
