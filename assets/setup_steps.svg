@@ -27,7 +27,7 @@
     <text x="16" y="104" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal setup</text>
 
     <text x="0" y="128" fill="#10B981" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">&#10003;</text>
-    <text x="16" y="128" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal token show</text>
+    <text x="16" y="128" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13">modal token info</text>
 
     <!-- Step 3: Clone biomodals -->
     <text x="0" y="160" fill="#64748B" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="13"># Step 3: Get biomodals</text>

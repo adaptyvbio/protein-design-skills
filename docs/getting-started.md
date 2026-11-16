@@ -42,7 +42,7 @@ modal setup
 ```
 This opens a browser. Click "Authorize".
 
-Verify: Run `modal token show` - should show your token
+Verify: Run `modal token info` - should show information about your active token
 
 ## Step 3: Get biomodals
 
