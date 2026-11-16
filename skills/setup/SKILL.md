@@ -23,7 +23,7 @@ Run through this checklist when a user encounters setup issues:
 | Step | Check | Fix |
 |------|-------|-----|
 | 1. Modal CLI | `modal --version` | `pip install modal` |
-| 2. Modal auth | `modal token show` | `modal setup` |
+| 2. Modal auth | `modal token info` | `modal setup` |
 | 3. biomodals | `ls biomodals/modal_*.py` | `git clone https://github.com/hgbrian/biomodals` |
 | 4. Test | `cd biomodals && modal run modal_boltzgen.py --help` | See troubleshooting |
 
@@ -93,7 +93,7 @@ modal setup
 
 This opens a browser. Click "Authorize".
 
-Verify: `modal token show`
+Verify: `modal token info`
 
 ### Step 3: Clone biomodals
 
