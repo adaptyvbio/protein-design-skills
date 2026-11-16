@@ -121,10 +121,12 @@ def get_pdb_references(accession):
 
     for xref in entry.get('uniProtKBCrossReferences', []):
         if xref['database'] == 'PDB':
+            properties = {prop['key']: prop.get('value', '') for prop in xref.get('properties', [])}
             pdbs.append({
                 'pdb_id': xref['id'],
-                'method': xref.get('properties', [{}])[0].get('value', ''),
-                'chains': xref.get('properties', [{}])[1].get('value', '')
+                'method': properties.get('Method', ''),
+                'resolution': properties.get('Resolution', ''),
+                'chains': properties.get('Chains', '')
             })
 
     return pdbs
